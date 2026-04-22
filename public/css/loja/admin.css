@@ -1,0 +1,175 @@
+/* ================= CABEÇALHO DA PÁGINA ================= */
+.admin-page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 30px;
+}
+
+.page-title h1 {
+    font-size: 1.8rem;
+    color: var(--bg-dark);
+}
+
+.page-title p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+/* ================= BOTÕES PADRÃO ================= */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    border: none;
+    font-size: 0.95rem;
+}
+
+.btn-primary {
+    background-color: var(--accent);
+    color: var(--bg-dark);
+}
+
+.btn-primary:hover {
+    background-color: var(--accent-hover);
+    transform: translateY(-2px);
+}
+
+/* ================= CARD PRINCIPAL ================= */
+.admin-card {
+    background-color: var(--white);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
+    padding: 25px;
+}
+
+.admin-card-header {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.form-select {
+    padding: 10px 15px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    outline: none;
+    color: var(--text-main);
+    background-color: var(--bg-light);
+}
+
+/* ================= TABELA DE DADOS ================= */
+.table-responsive {
+    overflow-x: auto;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px;
+}
+
+.admin-table th {
+    background-color: var(--bg-light);
+    color: var(--text-muted);
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.admin-table td {
+    padding: 15px;
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: middle;
+    color: var(--text-main);
+    font-size: 0.95rem;
+}
+
+.table-img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    background-color: var(--bg-light);
+    border-radius: 6px;
+    padding: 5px;
+    border: 1px solid var(--border-color);
+}
+
+/* Badges de Estoque */
+.badge-stock {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+.badge-stock.success { background-color: rgba(16, 185, 129, 0.1); color: #10b981; }
+.badge-stock.warning { background-color: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+.badge-stock.danger { background-color: rgba(239, 68, 68, 0.1); color: #ef4444; }
+
+/* Botões de Ação na Tabela (Editar/Excluir) */
+.action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.btn-icon.edit { background-color: rgba(59, 130, 246, 0.1); color: #3b82f6; }
+.btn-icon.edit:hover { background-color: #3b82f6; color: white; }
+
+.btn-icon.delete { background-color: rgba(239, 68, 68, 0.1); color: #ef4444; }
+.btn-icon.delete:hover { background-color: #ef4444; color: white; }
+
+/* ================= PAGINAÇÃO ================= */
+.pagination {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 25px;
+}
+
+.page-btn {
+    width: 35px;
+    height: 35px;
+    border: 1px solid var(--border-color);
+    background-color: var(--white);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: var(--transition);
+    color: var(--text-main);
+}
+
+.page-btn:hover:not(.disabled) {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.page-btn.active {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: var(--bg-dark);
+    font-weight: bold;
+}
+
+.page-btn.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

@@ -1,0 +1,197 @@
+/* =========================================
+   VARIÁVEIS DE CORES E LAYOUT
+   ========================================= */
+:root {
+    --ms-yellow: #FFD700;
+    --ms-yellow-hover: #e6c200;
+    --ms-black: #1a1a1a;
+    --ms-white: #ffffff;
+    --ms-bg-light: #f4f5f7;
+    --ms-text-dark: #333333;
+    --ms-text-muted: #777777;
+    --ms-border: #dcdcdc;
+    --ms-border-focus: #FFD700;
+    --ms-radius: 8px;
+    --ms-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* =========================================
+   CABEÇALHO DA PÁGINA
+   ========================================= */
+.page-header {
+    margin-bottom: 25px;
+}
+
+.page-header h2 {
+    font-size: 1.8rem;
+    color: var(--ms-black);
+    margin-bottom: 5px;
+    font-weight: 700;
+}
+
+.page-header p {
+    color: var(--ms-text-muted);
+    font-size: 0.95rem;
+}
+
+/* =========================================
+   CONTAINER BASE (CARD)
+   ========================================= */
+.admin-card {
+    background-color: var(--ms-white);
+    border-radius: var(--ms-radius);
+    box-shadow: var(--ms-shadow);
+    padding: 30px;
+    margin-bottom: 24px;
+}
+
+/* =========================================
+   ESTRUTURA DO FORMULÁRIO (GRID)
+   ========================================= */
+.admin-form .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px 24px;
+}
+
+/* Utilitário para campos largos (ocupam a linha inteira no grid de 2 colunas) */
+.span-2 {
+    grid-column: span 2;
+}
+
+/* =========================================
+   CAMPOS DE ENTRADA (INPUTS, SELECTS, TEXTAREA)
+   ========================================= */
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--ms-text-dark);
+    margin-bottom: 8px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--ms-border);
+    border-radius: 6px;
+    font-size: 0.95rem;
+    color: var(--ms-text-dark);
+    background-color: var(--ms-white);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    font-family: inherit;
+    outline: none;
+}
+
+.form-control::placeholder {
+    color: #aaaaaa;
+}
+
+/* Efeito de foco com a cor amarela da marca */
+.form-control:focus {
+    border-color: var(--ms-border-focus);
+    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.2);
+}
+
+/* Ajustes específicos para Textarea */
+.textarea-large {
+    resize: vertical;
+    min-height: 120px;
+}
+
+/* Ajustes específicos para Input de Arquivo */
+.file-upload-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.file-input {
+    padding: 9px 14px;
+    background-color: #fafafa;
+    cursor: pointer;
+}
+
+.text-muted {
+    font-size: 0.8rem;
+    color: var(--ms-text-muted);
+}
+
+/* =========================================
+   BOTÕES DE AÇÃO
+   ========================================= */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 35px;
+    padding-top: 20px;
+    border-top: 1px solid var(--ms-border);
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+.btn-primary {
+    background-color: var(--ms-yellow);
+    color: var(--ms-black);
+}
+
+.btn-primary:hover {
+    background-color: var(--ms-yellow-hover);
+}
+
+.btn-secondary {
+    background-color: var(--ms-bg-light);
+    color: var(--ms-text-dark);
+    border: 1px solid var(--ms-border);
+}
+
+.btn-secondary:hover {
+    background-color: #e2e4e8;
+}
+
+/* =========================================
+   RESPONSIVIDADE (MOBILE E TABLETS)
+   ========================================= */
+@media (max-width: 768px) {
+    /* Transforma o grid em uma única coluna */
+    .admin-form .form-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    /* Remove a expansão de colunas no mobile */
+    .span-2 {
+        grid-column: span 1;
+    }
+    
+    /* Botões ocupam 100% da largura e mudam a ordem */
+    .form-actions {
+        flex-direction: column-reverse;
+    }
+    
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}

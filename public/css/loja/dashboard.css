@@ -1,0 +1,242 @@
+/* =========================================
+   VARIÁVEIS LOCAIS (Escopo da Dashboard)
+   ========================================= */
+:root {
+    --dash-yellow: #ffd700;
+    --dash-black: #1a1a1a;
+    --dash-white: #ffffff;
+    --dash-text-dark: #333333;
+    --dash-text-muted: #777777;
+    --dash-border: #e0e0e0;
+    --dash-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    --dash-radius: 8px;
+    
+    /* Cores de Status */
+    --status-success: #2ecc71;
+    --status-success-bg: #eafaf1;
+    --status-warning: #f39c12;
+    --status-warning-bg: #fdf2e9;
+    --status-danger: #e74c3c;
+    --status-danger-bg: #fadbd8;
+}
+
+/* =========================================
+   CABEÇALHO DA DASHBOARD
+   ========================================= */
+.dashboard-header {
+    margin-bottom: 25px;
+}
+
+.dashboard-header h2 {
+    font-size: 1.8rem;
+    color: var(--dash-black);
+    margin-bottom: 5px;
+}
+
+.dashboard-header p {
+    color: var(--dash-text-muted);
+    font-size: 0.95rem;
+}
+
+/* =========================================
+   1. CARDS DE RESUMO
+   ========================================= */
+.summary-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.summary-card {
+    background-color: var(--dash-white);
+    padding: 20px;
+    border-radius: var(--dash-radius);
+    box-shadow: var(--dash-shadow);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border-left: 4px solid var(--dash-yellow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.summary-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+.card-icon {
+    width: 55px;
+    height: 55px;
+    background-color: var(--dash-black);
+    color: var(--dash-yellow);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+}
+
+.card-info h3 {
+    font-size: 0.85rem;
+    color: var(--dash-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 5px;
+}
+
+.card-number {
+    display: block;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--dash-text-dark);
+    margin-bottom: 3px;
+}
+
+.card-desc {
+    font-size: 0.8rem;
+    color: var(--dash-text-muted);
+}
+
+/* =========================================
+   GRID INFERIOR (Tabela e Produtos)
+   ========================================= */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+}
+
+.dashboard-panel {
+    background-color: var(--dash-white);
+    border-radius: var(--dash-radius);
+    box-shadow: var(--dash-shadow);
+    padding: 20px;
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--dash-border);
+}
+
+.panel-header h3 {
+    font-size: 1.1rem;
+    color: var(--dash-black);
+}
+
+.btn-link {
+    color: var(--dash-text-dark);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-bottom: 2px solid var(--dash-yellow);
+    padding-bottom: 2px;
+}
+
+/* =========================================
+   2. TABELA DE PEDIDOS
+   ========================================= */
+.table-responsive {
+    overflow-x: auto;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 500px; /* Garante scroll em telas muito pequenas */
+}
+
+.admin-table th, 
+.admin-table td {
+    padding: 12px 10px;
+    text-align: left;
+    border-bottom: 1px solid var(--dash-border);
+    font-size: 0.9rem;
+}
+
+.admin-table th {
+    color: var(--dash-text-muted);
+    font-weight: 600;
+}
+
+.admin-table td {
+    color: var(--dash-text-dark);
+}
+
+/* Badges de Status */
+.status-badge {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: inline-block;
+    text-align: center;
+}
+
+.status-badge.success { 
+    background-color: var(--status-success-bg); 
+    color: var(--status-success); 
+}
+.status-badge.warning { 
+    background-color: var(--status-warning-bg); 
+    color: var(--status-warning); 
+}
+.status-badge.danger { 
+    background-color: var(--status-danger-bg); 
+    color: var(--status-danger); 
+}
+
+/* =========================================
+   3. PRODUTOS MAIS VENDIDOS
+   ========================================= */
+.product-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.product-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px;
+    border-radius: var(--dash-radius);
+    transition: background-color 0.2s ease;
+}
+
+.product-item:hover {
+    background-color: #f9f9f9;
+}
+
+.product-item img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: var(--dash-radius);
+    border: 1px solid var(--dash-border);
+}
+
+.product-info h4 {
+    font-size: 0.9rem;
+    color: var(--dash-text-dark);
+    margin-bottom: 4px;
+}
+
+.product-info span {
+    font-size: 0.8rem;
+    color: var(--dash-text-muted);
+}
+
+/* =========================================
+   RESPONSIVIDADE
+   ========================================= */
+@media (max-width: 1024px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr; /* Tabela e lista empilham no tablet/mobile */
+    }
+}

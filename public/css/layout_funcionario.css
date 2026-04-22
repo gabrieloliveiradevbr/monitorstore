@@ -1,0 +1,374 @@
+/* ===============================================
+   VARIÁVEIS GLOBAIS
+   =============================================== */
+:root {
+    --bg-dark:            #111111;
+    --bg-darker:          #0a0a0a;
+    --accent:             #ffcc00;
+    --accent-hover:       #e6b800;
+    --accent-subtle:      rgba(255, 204, 0, 0.08);
+    --accent-subtle-hov:  rgba(255, 204, 0, 0.14);
+    --bg-light:           #f4f6f9;
+    --white:              #ffffff;
+    --text-main:          #333333;
+    --text-muted:         #777777;
+    --border-color:       #e2e8f0;
+    --border-dark:        #222222;
+
+    --sidebar-width:         260px;
+    --sidebar-compact-width: 72px;
+    --header-height:         64px;
+
+    --shadow:      0 4px 20px rgba(0, 0, 0, 0.06);
+    --transition:  all 0.25s ease;
+    --radius:      10px;
+}
+
+/* ===============================================
+   RESET (CORRIGIDO)
+   =============================================== */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* A tipografia NÃO deve ficar aqui para não quebrar os ícones */
+}
+
+/* Tipografia aplicada corretamente para herança */
+body, input, button, textarea, select {
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: var(--bg-light);
+    color: var(--text-main);
+    overflow-x: hidden;
+}
+
+/* CORREÇÃO FONT AWESOME */
+.fa-solid { font-weight: 900 !important; }
+.fa-regular { font-weight: 400 !important; }
+
+a  { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+
+/* ===============================================
+   APP SHELL
+   =============================================== */
+.admin-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.main-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-width: 0;
+}
+
+/* ===============================================
+   SIDEBAR
+   =============================================== */
+.sidebar {
+    width: var(--sidebar-width);
+    background-color: var(--bg-dark);
+    color: var(--white);
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border-dark);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    transition: width var(--transition);
+    z-index: 200;
+}
+
+.sidebar::-webkit-scrollbar       { width: 4px; }
+.sidebar::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 4px; }
+
+/* Logo */
+.sidebar-logo {
+    height: var(--header-height);
+    display: flex;
+    align-items: center;
+    padding: 0 22px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    border-bottom: 1px solid var(--border-dark);
+    gap: 10px;
+}
+
+.sidebar-logo i { color: var(--accent); font-size: 1.4rem; }
+.sidebar-logo .logo-text span { color: var(--accent); }
+
+/* Nav */
+.sidebar-nav {
+    padding: 16px 0 8px;
+    flex-grow: 1;
+}
+
+.nav-section-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: #444;
+    padding: 12px 22px 6px;
+}
+
+/* Menu */
+.menu-item { margin-bottom: 2px; }
+
+.menu-item a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px 12px 22px;
+    color: #8a9ab0;
+    font-size: 0.92rem;
+    font-weight: 500;
+    border-left: 3px solid transparent;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    margin-right: 14px;
+    transition: var(--transition);
+}
+
+.menu-item a i {
+    font-size: 1rem;
+    width: 20px;
+    text-align: center;
+}
+
+.menu-item a:hover {
+    background-color: var(--accent-subtle-hov);
+    color: var(--accent);
+}
+
+.menu-item.ativo a {
+    background-color: var(--accent);
+    color: var(--bg-dark);
+    font-weight: 700;
+}
+
+.menu-item.ativo a i { color: var(--bg-dark); }
+
+/* Sidebar footer */
+.sidebar-footer {
+    padding: 12px 0 16px;
+    border-top: 1px solid var(--border-dark);
+}
+
+.sidebar-logout {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px 12px 22px;
+    color: #ff6b6b;
+}
+
+/* ===============================================
+   HEADER
+   =============================================== */
+.top-header {
+    height: var(--header-height);
+    background-color: var(--bg-dark);
+    color: var(--white); /* Correção da cor base para o texto do header */
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    gap: 20px;
+    border-bottom: 2px solid var(--accent);
+}
+
+/* Lado Esquerdo: Breadcrumb / Título */
+.header-page-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--white);
+}
+
+.header-page-title i {
+    color: #8a9ab0;
+    font-size: 1.1rem;
+}
+
+/* Hamburger Menu (Mobile) */
+.hamburger {
+    background: transparent;
+    border: none;
+    color: var(--white);
+    font-size: 1.25rem;
+    cursor: pointer;
+    display: none; /* Escondido no desktop, mostrado via media query se precisar */
+}
+
+.hamburger:hover { color: var(--accent); }
+
+/* Busca */
+.search-bar {
+    display: flex;
+    align-items: center;
+    background-color: #1c1c1c;
+    border-radius: 8px;
+    padding: 8px 14px;
+    flex: 1;
+    max-width: 380px;
+    border: 1px solid #2a2a2a;
+    margin-left: auto;
+}
+
+.search-bar i { color: var(--accent); margin-right: 8px; }
+
+.search-bar input {
+    border: none;
+    background: transparent;
+    color: var(--white);
+    outline: none;
+    width: 100%;
+}
+
+/* Ações e Notificações */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.icon-btn {
+    position: relative;
+    background: transparent;
+    border: none;
+    color: #a0aec0;
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+.icon-btn:hover { color: var(--accent); }
+
+.badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background-color: var(--accent);
+    color: var(--bg-dark);
+    font-size: 0.65rem;
+    font-weight: 700;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Lado Direito: Perfil do Admin */
+.admin-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.avatar {
+    height: 34px;
+    width: 34px;
+    background-color: var(--accent);
+    color: var(--bg-dark);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.admin-name {
+    font-size: 0.7rem;
+    color: #8a9ab0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+}
+
+/* ===============================================
+   CONTEÚDO
+   =============================================== */
+.admin-conteudo {
+    flex-grow: 1;
+    padding: 28px 30px;
+}
+
+/* ===============================================
+   FOOTER
+   =============================================== */
+.admin-footer {
+    background-color: var(--bg-darker);
+    color: #666;
+    padding: 16px 30px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+}
+
+.footer-links a {
+    color: #8a9ab0;
+    transition: var(--transition);
+}
+
+.footer-links a:hover {
+    color: var(--accent);
+}
+
+.footer-links span {
+    margin: 0 8px;
+}
+
+/* ===============================================
+   MOBILE OVERLAY
+   =============================================== */
+.sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 150;
+    display: none;
+    opacity: 0;
+    transition: opacity var(--transition);
+}
+
+.sidebar-overlay.visible {
+    display: block;
+    opacity: 1;
+}
+
+/* ===============================================
+   RESPONSIVIDADE (Ajustes básicos p/ mobile)
+   =============================================== */
+@media (max-width: 992px) {
+    .sidebar {
+        position: fixed;
+        transform: translateX(-100%);
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    .hamburger {
+        display: block;
+    }
+
+    .search-bar {
+        display: none; /* Esconde barra de busca em telas menores para n quebrar o layout */
+    }
+
+    .header-page-title {
+        margin-left: auto;
+        margin-right: auto;
+    }
+}

@@ -1,0 +1,256 @@
+/* =========================================
+   ESTILOS GERAIS DA PÁGINA DE PEDIDOS
+   ========================================= */
+
+/* 1. Cabeçalho */
+.page-header {
+    margin-bottom: 25px;
+}
+.page-header h2 {
+    font-size: 1.8rem;
+    color: #1a1a1a; /* Escuro padrão da marca */
+    margin-bottom: 5px;
+}
+.page-header p {
+    color: #777;
+    font-size: 0.95rem;
+}
+
+/* Cards Base */
+.admin-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Sombra leve */
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+/* =========================================
+   2. FILTROS E BUSCA
+   ========================================= */
+.filter-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+}
+
+.search-box {
+    flex: 1;
+    min-width: 250px;
+    display: flex;
+    align-items: center;
+    background-color: #f4f5f7;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 10px 15px;
+    transition: border-color 0.3s;
+}
+.search-box:focus-within {
+    border-color: #ffd700; /* Destaque amarelo */
+}
+.search-box i {
+    color: #888;
+    margin-right: 10px;
+}
+.search-box input {
+    border: none;
+    background: transparent;
+    width: 100%;
+    outline: none;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.form-select {
+    padding: 10px 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    background-color: #fff;
+    color: #333;
+    font-size: 0.95rem;
+    cursor: pointer;
+    min-width: 180px;
+    outline: none;
+}
+.form-select:focus {
+    border-color: #ffd700;
+}
+
+.btn-primary {
+    background-color: #ffd700; /* Amarelo da marca */
+    color: #1a1a1a;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.3s, transform 0.1s;
+}
+.btn-primary:hover {
+    background-color: #e6c200;
+}
+.btn-primary:active {
+    transform: scale(0.98);
+}
+
+/* =========================================
+   3. TABELA DE PEDIDOS
+   ========================================= */
+.table-responsive {
+    overflow-x: auto; /* Scroll horizontal em telas menores */
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px; /* Garante que a tabela não esprema demais */
+}
+
+.admin-table th {
+    background-color: #fdfdfd;
+    color: #555;
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 14px 15px;
+    border-bottom: 2px solid #eee;
+    text-align: left;
+}
+
+.admin-table td {
+    padding: 14px 15px;
+    color: #333;
+    font-size: 0.95rem;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+}
+
+/* Linhas alternadas (Zebra) */
+.striped-table tbody tr:nth-child(even) {
+    background-color: #fafafa;
+}
+.striped-table tbody tr:hover {
+    background-color: #fdfae6; /* Fundo levemente amarelo no hover */
+}
+
+.text-center { text-align: center !important; }
+.text-muted { color: #888; font-size: 0.8rem; }
+
+/* =========================================
+   4. ESTILO DOS STATUS (Badges)
+   ========================================= */
+.badge-status {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    display: inline-block;
+    text-align: center;
+    min-width: 90px;
+}
+
+/* Cores específicas */
+.pago { background-color: #eafaf1; color: #2ecc71; }      /* Verde */
+.pendente { background-color: #fef9e7; color: #f1c40f; }  /* Amarelo */
+.enviado { background-color: #eaf2f8; color: #3498db; }   /* Azul */
+.cancelado { background-color: #fadbd8; color: #e74c3c; } /* Vermelho */
+
+/* =========================================
+   5. AÇÕES (Botões da Tabela)
+   ========================================= */
+.action-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.btn-action {
+    background-color: #f4f5f7;
+    border: 1px solid #e0e0e0;
+    color: #555;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.btn-action:hover {
+    background-color: #1a1a1a;
+    color: #ffd700; /* Ícone fica amarelo no hover escuro */
+    border-color: #1a1a1a;
+}
+
+/* =========================================
+   6. PAGINAÇÃO
+   ========================================= */
+.pagination-container {
+    display: flex;
+    justify-content: flex-end; /* Alinha à direita */
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.page-btn {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    color: #333;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.page-btn:hover:not(.active) {
+    background-color: #f4f5f7;
+}
+
+.page-btn.active {
+    background-color: #ffd700;
+    color: #1a1a1a;
+    border-color: #ffd700;
+}
+
+.page-btn.next-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.page-dots {
+    color: #888;
+    font-weight: bold;
+}
+
+/* =========================================
+   RESPONSIVIDADE (Tablet e Mobile)
+   ========================================= */
+@media (max-width: 768px) {
+    .filter-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .search-box, .form-select, .btn-primary {
+        width: 100%;
+    }
+    .pagination-container {
+        justify-content: center;
+    }
+}

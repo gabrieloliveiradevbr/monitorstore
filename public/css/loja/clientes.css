@@ -110,11 +110,16 @@
 /* =========================================
    BARRA DE BUSCA E AÇÕES
    ========================================= */
+.action-buttons-bar {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
 .action-bar-container {
     display: flex;
     gap: 15px;
     align-items: center;
-    justify-content: space-between;
 }
 
 .search-box {
@@ -285,6 +290,16 @@
     background-color: var(--ms-black);
     color: var(--ms-yellow);
     border-color: var(--ms-black);
+}
+
+.btn-action.delete{
+    background: rgba(239,68,68,0.1);
+    color: #ef4444;
+}
+
+.btn-action.delete:hover{
+    background: #ef4444;
+    color: #fff;
 }
 
 /* =========================================

@@ -3,6 +3,8 @@
 @section('contentcliente')
 <link rel="stylesheet" href="{{ asset('/css/cliente/template_produto.css') }}">
 
+@php $filtros = $filtros ?? []; @endphp
+
 <main class="conteudo-principal">
 
     {{-- ===== HEADER ===== --}}
@@ -13,27 +15,15 @@
 
     {{-- ===== FILTROS ===== --}}
     <section class="store-filter-bar">
-        <form action="" method="GET" class="filter-form">
-
-            <div class="filter-group">
-                <label for="categoria">Categoria</label>
-                <select name="categoria" id="categoria" class="filter-select">
-                    <option value="">Todas as Categorias</option>
-                    <option value="gamer">Gamer</option>
-                    <option value="profissional">Profissional</option>
-                    <option value="ultrawide">Ultrawide</option>
-                    <option value="portatil">Portátil</option>
-                </select>
-            </div>
+        <form action="{{ route('loja.monitores') }}" method="GET" class="filter-form">
 
             <div class="filter-group">
                 <label for="marca">Marca</label>
                 <select name="marca" id="marca" class="filter-select">
                     <option value="">Todas as Marcas</option>
-                    <option value="lg">LG</option>
-                    <option value="samsung">Samsung</option>
-                    <option value="dell">Dell</option>
-                    <option value="aoc">AOC</option>
+                    @foreach(['LG','Samsung','Dell','AOC','Asus','BenQ','Philips','ViewSonic'] as $m)
+                        <option value="{{ $m }}" {{ ($filtros['marca'] ?? '') == $m ? 'selected' : '' }}>{{ $m }}</option>
+                    @endforeach
                 </select>
             </div>
 
@@ -41,19 +31,19 @@
                 <label for="preco">Preço</label>
                 <select name="preco" id="preco" class="filter-select">
                     <option value="">Qualquer Preço</option>
-                    <option value="ate-1000">Até R$ 1.000</option>
-                    <option value="1000-2000">R$ 1.000 a R$ 2.000</option>
-                    <option value="acima-2000">Acima de R$ 2.000</option>
+                    <option value="ate-1000"  {{ ($filtros['preco'] ?? '') == 'ate-1000'  ? 'selected' : '' }}>Até R$ 1.000</option>
+                    <option value="1000-2000" {{ ($filtros['preco'] ?? '') == '1000-2000' ? 'selected' : '' }}>R$ 1.000 a R$ 2.000</option>
+                    <option value="acima-2000"{{ ($filtros['preco'] ?? '') == 'acima-2000'? 'selected' : '' }}>Acima de R$ 2.000</option>
                 </select>
             </div>
 
             <div class="filter-group">
                 <label for="ordenar">Ordenar por</label>
                 <select name="ordenar" id="ordenar" class="filter-select">
-                    <option value="relevancia">Relevância</option>
-                    <option value="menor-preco">Menor Preço</option>
-                    <option value="maior-preco">Maior Preço</option>
-                    <option value="lancamentos">Lançamentos</option>
+                    <option value="relevancia"  {{ ($filtros['ordenar'] ?? '') == 'relevancia'   ? 'selected' : '' }}>Relevância</option>
+                    <option value="menor-preco" {{ ($filtros['ordenar'] ?? '') == 'menor-preco'  ? 'selected' : '' }}>Menor Preço</option>
+                    <option value="maior-preco" {{ ($filtros['ordenar'] ?? '') == 'maior-preco'  ? 'selected' : '' }}>Maior Preço</option>
+                    <option value="lancamentos" {{ ($filtros['ordenar'] ?? '') == 'lancamentos'  ? 'selected' : '' }}>Lançamentos</option>
                 </select>
             </div>
 
@@ -61,6 +51,11 @@
                 <button type="submit" class="btn-filter">
                     <i class="fa-solid fa-sliders"></i> Filtrar
                 </button>
+                @if(array_filter($filtros))
+                    <a href="{{ route('loja.monitores') }}" class="btn-filter-clear" title="Limpar filtros">
+                        <i class="fa-solid fa-xmark"></i>
+                    </a>
+                @endif
             </div>
 
         </form>
@@ -68,124 +63,83 @@
 
     {{-- ===== CONTAGEM DE RESULTADOS ===== --}}
     <div class="store-results-bar">
-        <span class="results-count"><strong>5</strong> produtos encontrados</span>
+        <span class="results-count">
+            <strong>{{ $produtos->count() }}</strong>
+            {{ $produtos->count() == 1 ? 'produto encontrado' : 'produtos encontrados' }}
+        </span>
+        @if(session('mensagem'))
+            <div class="flash-inline flash-success">
+                <i class="fa-solid fa-circle-check"></i> {{ session('mensagem') }}
+            </div>
+        @endif
     </div>
 
     {{-- ===== GRID DE PRODUTOS ===== --}}
     <section class="store-product-grid">
 
-        <article class="store-card">
-            <div class="card-image-wrapper">
-                <img src="https://via.placeholder.com/400x300?text=Monitor+LG+Gamer" alt="Monitor Gamer LG">
-            </div>
-            <div class="card-content">
-                <span class="card-brand">LG</span>
-                <h2 class="card-title">Monitor Gamer LG UltraGear 24" 144Hz IPS</h2>
-                <p class="card-desc">Tempo de resposta de 1ms e tecnologia FreeSync para máxima fluidez.</p>
-                <div class="card-price">R$ 1.299,00</div>
-            </div>
-            <div class="card-actions">
-                <button class="btn btn-primary js-add-cart" type="button">
-                    <i class="fa-solid fa-cart-shopping"></i> Adicionar
-                </button>
-                <a href="{{ route('loja.produto', 1) }}" class="btn btn-outline">Ver detalhes</a>
-            </div>
-        </article>
+        @forelse($produtos as $produto)
 
-        <article class="store-card">
-            <div class="card-image-wrapper">
-                <img src="https://via.placeholder.com/400x300?text=Monitor+Dell+4K" alt="Monitor Dell 4K">
-            </div>
-            <div class="card-content">
-                <span class="card-brand">Dell</span>
-                <h2 class="card-title">Monitor Profissional Dell 27" 4K USB-C</h2>
-                <p class="card-desc">Cores precisas com 99% sRGB, ideal para designers e editores.</p>
-                <div class="card-price">R$ 3.450,00</div>
-            </div>
-            <div class="card-actions">
-                <button class="btn btn-primary js-add-cart" type="button">
-                    <i class="fa-solid fa-cart-shopping"></i> Adicionar
-                </button>
-                <a href="{{ route('loja.produto', 2) }}" class="btn btn-outline">Ver detalhes</a>
-            </div>
-        </article>
+            <article class="store-card">
 
-        <article class="store-card">
-            <div class="card-image-wrapper">
-                <img src="https://via.placeholder.com/400x300?text=Monitor+Samsung+Odyssey" alt="Monitor Samsung Odyssey">
-            </div>
-            <div class="card-content">
-                <span class="card-brand">Samsung</span>
-                <h2 class="card-title">Monitor Curvo Samsung Odyssey G5 27"</h2>
-                <p class="card-desc">Curvatura 1000R para imersão total e resolução WQHD incrível.</p>
-                <div class="card-price">R$ 2.199,00</div>
-            </div>
-            <div class="card-actions">
-                <button class="btn btn-primary js-add-cart" type="button">
-                    <i class="fa-solid fa-cart-shopping"></i> Adicionar
-                </button>
-                <a href="{{ route('loja.produto', 3) }}" class="btn btn-outline">Ver detalhes</a>
-            </div>
-        </article>
+                <div class="card-image-wrapper">
+                    @if($produto->imagem)
+                        <img src="{{ asset('uploads/produtos/' . $produto->imagem) }}" alt="{{ $produto->nome }}">
+                    @else
+                        <img src="https://via.placeholder.com/400x300?text=Sem+Imagem" alt="Sem imagem">
+                    @endif
 
-        <article class="store-card">
-            <div class="card-image-wrapper">
-                <img src="https://via.placeholder.com/400x300?text=Monitor+AOC+Hero" alt="Monitor AOC Hero">
-            </div>
-            <div class="card-content">
-                <span class="card-brand">AOC</span>
-                <h2 class="card-title">Monitor AOC Hero 24" Full HD 165Hz</h2>
-                <p class="card-desc">A melhor taxa de atualização para esports competitivos.</p>
-                <div class="card-price">R$ 1.099,00</div>
-            </div>
-            <div class="card-actions">
-                <button class="btn btn-primary js-add-cart" type="button">
-                    <i class="fa-solid fa-cart-shopping"></i> Adicionar
-                </button>
-                <a href="{{ route('loja.produto', 4) }}" class="btn btn-outline">Ver detalhes</a>
-            </div>
-        </article>
+                    @if($produto->oferta)
+                        <span class="card-badge-img">OFERTA</span>
+                    @endif
+                </div>
 
-        <article class="store-card">
-            <div class="card-image-wrapper">
-                <img src="https://via.placeholder.com/400x300?text=Monitor+Ultrawide" alt="Monitor Ultrawide LG">
+                <div class="card-content">
+                    <span class="card-brand">{{ $produto->categoria }}</span>
+                    <h2 class="card-title">{{ $produto->nome }}</h2>
+                    <p class="card-desc">{{ \Illuminate\Support\Str::limit($produto->descricao, 80, '...') }}</p>
+
+                    <div class="card-pricing">
+                        @if($produto->preco && $produto->preco_pix && $produto->preco > $produto->preco_pix)
+                            <span class="card-price-old">R$ {{ number_format($produto->preco, 2, ',', '.') }}</span>
+                        @endif
+                        <div class="card-price">R$ {{ number_format($produto->preco_pix ?? $produto->preco, 2, ',', '.') }}</div>
+                        @if($produto->preco_parcelado && $produto->parcelas)
+                            <span class="card-installments">em {{ $produto->parcelas }}x de R$ {{ number_format($produto->preco_parcelado / $produto->parcelas, 2, ',', '.') }}</span>
+                        @endif
+                    </div>
+                </div>
+
+                <div class="card-actions">
+                    {{-- Form POST para adicionar ao carrinho --}}
+                    <form method="POST" action="{{ route('carrinho.adicionar') }}" class="form-add-cart">
+                        @csrf
+                        <input type="hidden" name="produto_id" value="{{ $produto->id }}">
+                        <input type="hidden" name="quantidade" value="1">
+                        <input type="hidden" name="acao" value="adicionar">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa-solid fa-cart-shopping"></i> Adicionar
+                        </button>
+                    </form>
+
+                    <a href="{{ route('loja.produto', $produto->id) }}" class="btn btn-outline">
+                        Ver detalhes
+                    </a>
+                </div>
+
+            </article>
+
+        @empty
+
+            <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
+                <i class="fa-solid fa-magnifying-glass" style="font-size:3rem; color:#d1d5db; margin-bottom:1rem;"></i>
+                <h3>Nenhum monitor encontrado.</h3>
+                <p style="color:#6b7280; margin-top:0.5rem;">Tente outros filtros ou <a href="{{ route('loja.monitores') }}">limpe os filtros</a>.</p>
             </div>
-            <div class="card-content">
-                <span class="card-brand">LG</span>
-                <h2 class="card-title">Monitor LG Ultrawide 34" WQHD IPS</h2>
-                <p class="card-desc">Mais espaço de tela para produtividade multitarefa extrema.</p>
-                <div class="card-price">R$ 2.899,00</div>
-            </div>
-            <div class="card-actions">
-                <button class="btn btn-primary js-add-cart" type="button">
-                    <i class="fa-solid fa-cart-shopping"></i> Adicionar
-                </button>
-                <a href="{{ route('loja.produto', 5) }}" class="btn btn-outline">Ver detalhes</a>
-            </div>
-        </article>
+
+        @endforelse
 
     </section>
 
 </main>
-
-{{-- ===== JS: Feedback visual nos botões de adicionar ===== --}}
-<script>
-document.querySelectorAll('.js-add-cart').forEach(btn => {
-    btn.addEventListener('click', function () {
-        if (this.disabled) return;
-        const original = this.innerHTML;
-        this.innerHTML = '<i class="fa-solid fa-check"></i> Adicionado!';
-        this.style.backgroundColor = '#28a745';
-        this.style.borderColor = '#28a745';
-        this.disabled = true;
-        setTimeout(() => {
-            this.innerHTML = original;
-            this.style.backgroundColor = '';
-            this.style.borderColor = '';
-            this.disabled = false;
-        }, 1800);
-    });
-});
-</script>
 
 @endsection

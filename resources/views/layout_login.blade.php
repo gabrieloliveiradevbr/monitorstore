@@ -47,12 +47,12 @@
             <div class="header-actions">
 
                 {{-- Busca (Desktop) --}}
-                <form class="search-bar" role="search" action="{{ route('loja.busca') }}" method="GET">
-                    <input type="text" name="q" placeholder="Buscar produtos..." aria-label="Buscar produtos" value="{{ request('q') }}">
-                    <button type="submit" aria-label="Pesquisar">
+                <div class="search-bar" role="search">
+                    <input type="text" placeholder="Buscar produtos..." aria-label="Buscar produtos">
+                    <button type="button" aria-label="Pesquisar">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </button>
-                </form>
+                </div>
 
                 {{-- Conta --}}
                 <ul>
@@ -64,9 +64,9 @@
 
                     @else
 
-                    <a href="{{ route('login') }}">
-                        <i class="fa-regular fa-user"></i> Login
-                    </a>
+                        <a href="{{ route('login') }}">
+                            <i class="fa-regular fa-user"></i> Login
+                        </a>
 
                     @endif
                 </ul>
@@ -77,9 +77,7 @@
                         <a href="{{ route('loja.carrinho') }}" aria-label="Carrinho de compras">
                             <i class="fa-solid fa-cart-shopping"></i>
                         </a>
-                        @if(session()->has('carrinho') && count(session('carrinho')) > 0)
-                            <span class="cart-count">{{ array_sum(array_column(session('carrinho'), 'quantidade')) }}</span>
-                        @endif
+                        {{-- <span class="cart-count">3</span> --}}
                     </li>
                 </ul>
 
@@ -128,31 +126,22 @@
                             <i class="fa-solid fa-plug"></i> Acessórios
                         </a>
                     </li>
-                    <li class="menu-item" title="Minha Conta">
+                    @if(session()->has('cliente_id'))
 
-                        @if(session()->has('cliente_id'))
+                        <a href="{{ route('loja.minhaconta', session('cliente_id')) }}">
+                            <i class="fa-regular fa-user"></i> Minha Conta
+                        </a>
 
-                            <a href="{{ route('loja.minhaconta', session('cliente_id')) }}" aria-label="Minha Conta">
-                                <i class="fa-regular fa-user"></i>
-                            </a>
+                    @else
 
-                        @else
+                        <a href="{{ route('login') }}">
+                            <i class="fa-regular fa-user"></i> Login
+                        </a>
 
-                            <a href="{{ route('login') }}" aria-label="Login">
-                                <i class="fa-regular fa-user"></i>
-                            </a>
-
-                        @endif
-
-                    </li>
+                    @endif
                     <li class="{{ request()->routeIs('loja.carrinho') ? 'ativo' : '' }}">
                         <a href="{{ route('loja.carrinho') }}">
                             <i class="fa-solid fa-cart-shopping"></i> Carrinho
-                            @if(session()->has('carrinho') && count(session('carrinho')) > 0)
-                                <span class="badge" style="background: var(--color-accent); color: var(--color-primary); font-size: 0.75rem; font-weight: 800; padding: 2px 6px; border-radius: 10px; margin-left: 5px;">
-                                    {{ array_sum(array_column(session('carrinho'), 'quantidade')) }}
-                                </span>
-                            @endif
                         </a>
                     </li>
                     <li class="{{ request()->routeIs('loja.contato') ? 'ativo' : '' }}">
@@ -164,72 +153,20 @@
             </nav>
 
             <div class="mobile-nav-footer">
-                <form class="mobile-search" role="search" action="{{ route('loja.busca') }}" method="GET">
-                    <input type="text" name="q" placeholder="Buscar produtos..." aria-label="Buscar produtos" value="{{ request('q') }}">
-                    <button type="submit" aria-label="Pesquisar">
+                <div class="mobile-search" role="search">
+                    <input type="text" placeholder="Buscar produtos..." aria-label="Buscar produtos">
+                    <button type="button" aria-label="Pesquisar">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </button>
-                </form>
+                </div>
             </div>
 
         </div>
     </div>
 
     {{-- ===== CONTEÚDO DA PÁGINA ===== --}}
-    @yield('contentcliente')
+    @yield('contentlogin')
 
-    {{-- ===== FOOTER ===== --}}
-    <footer class="footer">
-        <div class="footer-container container grid-4">
-
-            <div class="footer-col">
-                <a href="{{ route('inicio') }}" class="logo footer-logo">
-                    <i class="fa-solid fa-desktop"></i> Monitor<span>Store</span>
-                </a>
-                <p>A sua loja especializada em telas e soluções ergonômicas. Equipando o seu setup de ponta a ponta.</p>
-                <div class="social-links">
-                    <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a href="#" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
-                    <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
-                </div>
-            </div>
-
-            <div class="footer-col">
-                <h4>Links Rápidos</h4>
-                <ul>
-                    <li><a href="{{ route('inicio') }}">Início</a></li>
-                    <li><a href="#">Rastrear Pedido</a></li>
-                    <li><a href="#">Políticas de Devolução</a></li>
-                    <li><a href="#">Garantia</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-col">
-                <h4>Categorias</h4>
-                <ul>
-                    <li><a href="{{ route('loja.monitores') }}">Monitores Gamer</a></li>
-                    <li><a href="{{ route('loja.monitores') }}">Monitores Profissionais</a></li>
-                    <li><a href="{{ route('loja.acessorios') }}">Suportes Articulados</a></li>
-                    <li><a href="{{ route('loja.acessorios') }}">Cabos e Adaptadores</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-col">
-                <h4>Contato</h4>
-                <ul class="contact-info">
-                    <li><i class="fa-solid fa-location-dot"></i> Av. da Tecnologia, 1024 — São Paulo, SP</li>
-                    <li><i class="fa-solid fa-phone"></i> (11) 4002-8922</li>
-                    <li><i class="fa-solid fa-envelope"></i> contato@monitorstore.com.br</li>
-                </ul>
-            </div>
-
-        </div>
-
-        <div class="footer-bottom">
-            <p>&copy; 2026 Monitor Store. Todos os direitos reservados.</p>
-        </div>
-    </footer>
 
     {{-- ===== JS: Menu mobile ===== --}}
     <script>

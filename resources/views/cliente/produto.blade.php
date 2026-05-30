@@ -1,242 +1,626 @@
 @extends('layout_cliente')
 
 @section('contentcliente')
+
 <link rel="stylesheet" href="{{ asset('/css/cliente/produto.css') }}">
 
 <main class="conteudo-principal product-page">
 
-    <!-- ── TOPO: GALERIA + INFORMAÇÕES ─────────────── -->
+    {{-- ============================= --}}
+    {{-- TOPO DO PRODUTO --}}
+    {{-- ============================= --}}
     <div class="product-top-grid">
 
-        <!-- Galeria -->
+        {{-- GALERIA --}}
         <div class="product-gallery">
-            <div class="main-image store-card" id="main-image-wrapper">
-                <img id="main-img"
-                     src="https://via.placeholder.com/600x600?text=Monitor+Gamer+UltraGear"
-                     alt="Monitor Gamer UltraGear 24 polegadas">
+
+            <div class="main-image store-card">
+
+                <img
+                    id="main-img"
+                    src="{{ asset('uploads/produtos/' . $produto->imagem) }}"
+                    alt="{{ $produto->nome }}"
+                >
+
             </div>
+
             <div class="thumbnails">
-                <div class="thumb store-card active" onclick="trocarImagem(this, 'https://via.placeholder.com/600x600?text=Img+1')">
-                    <img src="https://via.placeholder.com/150x150?text=Img+1" alt="Miniatura 1">
-                </div>
-                <div class="thumb store-card" onclick="trocarImagem(this, 'https://via.placeholder.com/600x600?text=Img+2')">
-                    <img src="https://via.placeholder.com/150x150?text=Img+2" alt="Miniatura 2">
-                </div>
-                <div class="thumb store-card" onclick="trocarImagem(this, 'https://via.placeholder.com/600x600?text=Img+3')">
-                    <img src="https://via.placeholder.com/150x150?text=Img+3" alt="Miniatura 3">
-                </div>
-                <div class="thumb store-card" onclick="trocarImagem(this, 'https://via.placeholder.com/600x600?text=Img+4')">
-                    <img src="https://via.placeholder.com/150x150?text=Img+4" alt="Miniatura 4">
-                </div>
+
+                {{-- IMAGEM PRINCIPAL --}}
+                @if($produto->imagem)
+
+                    <div
+                        class="thumb store-card active"
+                        onclick="trocarImagem(this, '{{ asset('uploads/produtos/' . $produto->imagem) }}')"
+                    >
+
+                        <img
+                            src="{{ asset('uploads/produtos/' . $produto->imagem) }}"
+                            alt="{{ $produto->nome }}"
+                        >
+
+                    </div>
+
+                @endif
+
+                {{-- IMAGEM 2 --}}
+                @if($produto->imagem2)
+
+                    <div
+                        class="thumb store-card"
+                        onclick="trocarImagem(this, '{{ asset('uploads/produtos/' . $produto->imagem2) }}')"
+                    >
+
+                        <img
+                            src="{{ asset('uploads/produtos/' . $produto->imagem2) }}"
+                            alt="{{ $produto->nome }}"
+                        >
+
+                    </div>
+
+                @endif
+
+                {{-- IMAGEM 3 --}}
+                @if($produto->imagem3)
+
+                    <div
+                        class="thumb store-card"
+                        onclick="trocarImagem(this, '{{ asset('uploads/produtos/' . $produto->imagem3) }}')"
+                    >
+
+                        <img
+                            src="{{ asset('uploads/produtos/' . $produto->imagem3) }}"
+                            alt="{{ $produto->nome }}"
+                        >
+
+                    </div>
+
+                @endif
+
+                {{-- IMAGEM 4 --}}
+                @if($produto->imagem4)
+
+                    <div
+                        class="thumb store-card"
+                        onclick="trocarImagem(this, '{{ asset('uploads/produtos/' . $produto->imagem4) }}')"
+                    >
+
+                        <img
+                            src="{{ asset('uploads/produtos/' . $produto->imagem4) }}"
+                            alt="{{ $produto->nome }}"
+                        >
+
+                    </div>
+
+                @endif
+
+                {{-- IMAGEM 5 --}}
+                @if($produto->imagem5)
+
+                    <div
+                        class="thumb store-card"
+                        onclick="trocarImagem(this, '{{ asset('uploads/produtos/' . $produto->imagem5) }}')"
+                    >
+
+                        <img
+                            src="{{ asset('uploads/produtos/' . $produto->imagem5) }}"
+                            alt="{{ $produto->nome }}"
+                        >
+
+                    </div>
+
+                @endif
+
             </div>
+
         </div>
 
-        <!-- Informações -->
+        {{-- INFORMAÇÕES --}}
         <div class="product-info-container">
 
             <div class="product-header">
-                <span class="product-brand">LG</span>
-                <h1 class="product-title">Monitor Gamer UltraGear 24" 144Hz 1ms IPS FreeSync</h1>
 
-                <div class="product-rating">
-                    <div class="stars" aria-label="5 de 5 estrelas">
-                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
+                <span class="product-brand">
+                    {{ $produto->categoria }}
+                </span>
+
+                <h1 class="product-title">
+                    {{ $produto->nome }}
+                </h1>
+                <div class="product-rating-summary">
+                    <div class="stars">
+                        @for($i = 1; $i <= 5; $i++)
+                            <i class="fa-solid fa-star {{ $i <= round($mediaNota) ? 'active' : 'inactive' }}"></i>
+                        @endfor
                     </div>
-                    <span class="rating-count">47 avaliações</span>
+                    <span class="rating-text">
+                        {{ number_format($mediaNota, 1) }} ({{ $produto->avaliacoes->count() }} avaliações)
+                    </span>
                 </div>
+
             </div>
 
+            {{-- BADGES --}}
             <div class="product-badges">
-                <span class="badge-item badge-stock"><i class="fa-solid fa-circle-check"></i> Em estoque</span>
-                <span class="badge-item badge-shipping"><i class="fa-solid fa-truck-fast"></i> Frete grátis Sul e Sudeste</span>
+
+                @if($produto->estoque > 0)
+
+                    <span class="badge-item badge-stock">
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                        Em estoque
+
+                    </span>
+
+                @else
+
+                    <span class="badge-item badge-danger">
+
+                        <i class="fa-solid fa-circle-xmark"></i>
+
+                        Produto indisponível
+
+                    </span>
+
+                @endif
+
+                @if($produto->oferta == 1)
+
+                    <span class="badge-item badge-offer">
+
+                        <i class="fa-solid fa-fire"></i>
+
+                        Em Oferta
+
+                    </span>
+
+                @endif
+
             </div>
 
-            <p class="product-short-desc">
-                Eleve seu nível de jogo com o monitor LG UltraGear. Cores vibrantes com painel IPS, tempo de resposta ultrarrápido de 1ms e taxa de atualização de 144Hz para uma jogabilidade fluida e sem rastros.
+            {{-- DESCRIÇÃO --}}
+            <p class="product-short-desc" style="display:none;">
+
+                {{ $produto->descricao }}
+
             </p>
 
-            <!-- Preço -->
+            {{-- PREÇOS --}}
             <div class="product-pricing">
-                <span class="old-price">De <s>R$ 1.699,00</s></span>
+
+                @if($produto->preco > $produto->preco_pix)
+
+                    <span class="old-price">
+
+                        De
+                        <s>
+                            R$
+                            {{ number_format($produto->preco, 2, ',', '.') }}
+                        </s>
+
+                    </span>
+
+                @endif
+
                 <div class="pricing-row">
-                    <span class="current-price">R$ 1.299,00</span>
-                    <span class="discount-badge">−24%</span>
+
+                    <span class="current-price">
+
+                        R$
+                        {{ number_format($produto->preco_pix, 2, ',', '.') }}
+
+                    </span>
+
+                    @if($produto->oferta == 1 && $produto->preco > $produto->preco_pix)
+
+                        <span class="discount-badge">
+
+                            -{{
+                                round(
+                                    (
+                                        ($produto->preco - $produto->preco_pix)
+                                        / $produto->preco
+                                    ) * 100
+                                )
+                            }}%
+
+                        </span>
+
+                    @endif
+
                 </div>
-                <span class="installments">ou em até <strong>10× de R$ 129,90</strong> sem juros</span>
+
+                @if($produto->preco_parcelado)
+
+                    <span class="installments">
+
+                        ou em até
+
+                        <strong>
+
+                            {{ $produto->parcelas }}x de
+                            R$
+                            {{
+                                number_format(
+                                    $produto->preco_parcelado /
+                                    $produto->parcelas,
+                                    2,
+                                    ',',
+                                    '.'
+                                )
+                            }}
+
+                        </strong>
+
+                        sem juros
+
+                    </span>
+
+                @endif
+
             </div>
 
-            <!-- Formulário -->
-            <form method="POST" action="processa_carrinho.php" class="product-buy-form">
-                <input type="hidden" name="produto_id" value="105">
+            {{-- FORMULÁRIO --}}
+            <form
+                method="POST"
+                action="{{ route('carrinho.adicionar') }}"
+                class="product-buy-form"
+            >
 
+                @csrf
+
+                <input
+                    type="hidden"
+                    name="produto_id"
+                    value="{{ $produto->id }}"
+                >
+
+                {{-- QUANTIDADE --}}
                 <div class="quantity-selector">
-                    <label for="quantidade">Quantidade</label>
+
+                    <label for="quantidade">
+                        Quantidade
+                    </label>
+
                     <div class="qty-control">
-                        <button type="button" class="qty-btn" onclick="alterarQtd(-1)" aria-label="Diminuir">−</button>
-                        <input type="number" id="quantidade" name="quantidade"
-                               value="1" min="1" max="10" class="qty-input" aria-label="Quantidade">
-                        <button type="button" class="qty-btn" onclick="alterarQtd(1)"  aria-label="Aumentar">+</button>
+
+                        <button
+                            type="button"
+                            class="qty-btn"
+                            onclick="alterarQtd(-1)"
+                        >
+                            −
+                        </button>
+
+                        <input
+                            type="number"
+                            id="quantidade"
+                            name="quantidade"
+                            value="1"
+                            min="1"
+                            max="{{ $produto->estoque }}"
+                            class="qty-input"
+                        >
+
+                        <button
+                            type="button"
+                            class="qty-btn"
+                            onclick="alterarQtd(1)"
+                        >
+                            +
+                        </button>
+
                     </div>
-                    <span class="stock-hint">Máx. 10 por pedido</span>
+
+                    <span class="stock-hint">
+
+                        {{ $produto->estoque }}
+                        unidades disponíveis
+
+                    </span>
+
                 </div>
 
+                {{-- BOTÕES --}}
                 <div class="action-buttons">
-                    <button type="submit" name="acao" value="adicionar" class="btn btn-outline btn-cart" id="btn-add-cart">
-                        <i class="fa-solid fa-cart-plus"></i> Adicionar ao Carrinho
+
+                    <button
+                        type="submit"
+                        name="acao"
+                        value="adicionar"
+                        class="btn btn-outline btn-cart"
+                        id="btn-add-cart"
+                    >
+
+                        <i class="fa-solid fa-cart-plus"></i>
+
+                        Adicionar ao Carrinho
+
                     </button>
-                    <button type="submit" name="acao" value="comprar" class="btn btn-primary btn-buy">
-                        <i class="fa-solid fa-bolt"></i> Comprar Agora
+
+                    <button
+                        type="submit"
+                        name="acao"
+                        value="comprar"
+                        class="btn btn-primary btn-buy"
+                    >
+
+                        <i class="fa-solid fa-bolt"></i>
+
+                        Comprar Agora
+
                     </button>
+
                 </div>
+
             </form>
 
-            <!-- Garantias -->
+            {{-- GARANTIAS --}}
             <ul class="product-guarantees">
-                <li><i class="fa-solid fa-shield-halved"></i> Garantia de 12 meses</li>
-                <li><i class="fa-solid fa-rotate-left"></i>  Devolução em até 30 dias</li>
-                <li><i class="fa-solid fa-lock"></i>          Pagamento 100% seguro</li>
+
+                <li>
+
+                    <i class="fa-solid fa-shield-halved"></i>
+
+                    Garantia de 12 meses
+
+                </li>
+
+                <li>
+
+                    <i class="fa-solid fa-rotate-left"></i>
+
+                    Devolução em até 30 dias
+
+                </li>
+
+                <li>
+
+                    <i class="fa-solid fa-lock"></i>
+
+                    Pagamento 100% seguro
+
+                </li>
+
             </ul>
 
         </div>
+
     </div>
 
-    <!-- ── ESPECIFICAÇÕES ────────────────────────── -->
+    {{-- ============================= --}}
+    {{-- DETALHES --}}
+    {{-- ============================= --}}
     <section class="product-details-section store-card">
-        <h2><i class="fa-solid fa-list-check"></i> Especificações Técnicas</h2>
-        <p class="specs-intro">O monitor perfeito para o seu setup gamer. Construído com materiais de alta durabilidade e um design sem bordas, garantindo imersão total.</p>
 
-        <table class="specs-table">
-            <tbody>
-                <tr>
-                    <th>Tamanho da Tela</th>
-                    <td>24 Polegadas</td>
-                </tr>
-                <tr>
-                    <th>Tipo de Painel</th>
-                    <td>IPS</td>
-                </tr>
-                <tr>
-                    <th>Resolução Máxima</th>
-                    <td>1920 × 1080 (Full HD)</td>
-                </tr>
-                <tr>
-                    <th>Taxa de Atualização</th>
-                    <td>144Hz</td>
-                </tr>
-                <tr>
-                    <th>Tempo de Resposta</th>
-                    <td>1ms (GtG)</td>
-                </tr>
-                <tr>
-                    <th>Conexões</th>
-                    <td>2× HDMI · 1× DisplayPort · 1× Saída de Fone</td>
-                </tr>
-            </tbody>
-        </table>
+        <h2>
+
+            <i class="fa-solid fa-list-check"></i>
+
+            Descrição do Produto
+
+        </h2>
+
+        <div class="product-description">
+
+            {!! nl2br(e($produto->descricao)) !!}
+
+        </div>
+
     </section>
 
-    <!-- ── AVALIAÇÕES ────────────────────────────── -->
+    {{-- ============================= --}}
+    {{-- AVALIAÇÕES --}}
+    {{-- ============================= --}}
     <section class="product-reviews-section store-card">
-        <div class="reviews-header">
-            <h2><i class="fa-solid fa-star"></i> Avaliações de Clientes</h2>
-            <div class="reviews-summary">
-                <span class="reviews-score">5,0</span>
-                <div>
-                    <div class="stars">
-                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
+        <h2>
+            <i class="fa-solid fa-star"></i>
+            Avaliações dos Clientes
+        </h2>
+
+        <div class="reviews-container">
+            {{-- LISTA DE AVALIAÇÕES --}}
+            <div class="reviews-list">
+                @forelse($produto->avaliacoes as $av)
+                    <div class="review-item">
+                        <div class="review-header">
+                            <div class="reviewer-info">
+                                <strong class="reviewer-name">{{ $av->cliente->nome }}</strong>
+                                <div class="review-stars">
+                                    @for($i = 1; $i <= 5; $i++)
+                                        <i class="fa-solid fa-star {{ $i <= $av->nota ? 'active' : 'inactive' }}"></i>
+                                    @endfor
+                                </div>
+                            </div>
+                            <span class="review-date">{{ $av->created_at->format('d/m/Y') }}</span>
+                        </div>
+                        <p class="review-comment">{{ $av->comentario }}</p>
                     </div>
-                    <span class="rating-count">47 avaliações</span>
-                </div>
+                @empty
+                    <p class="no-reviews">Nenhuma avaliação ainda. Seja o primeiro a avaliar!</p>
+                @endforelse
+            </div>
+
+            {{-- FORMULÁRIO DE AVALIAÇÃO --}}
+            <div class="review-form-container">
+                <h3>Deixe sua avaliação</h3>
+                @if(session()->has('cliente_id'))
+                    <form action="{{ route('avaliacao.store') }}" method="POST" class="review-form">
+                        @csrf
+                        <input type="hidden" name="produto_id" value="{{ $produto->id }}">
+
+                        <div class="form-group">
+                            <label>Sua Nota:</label>
+                            <div class="star-rating-input">
+                                @for($i = 1; $i <= 5; $i++)
+                                    <label class="star-label">
+                                        <input type="radio" name="nota" value="{{ $i }}" required>
+                                        <i class="fa-solid fa-star"></i>
+                                    </label>
+                                @endfor
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="comentario">Comentário:</label>
+                            <textarea name="comentario" id="comentario" rows="4" required placeholder="O que você achou do produto?"></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Enviar Avaliação</button>
+                    </form>
+                @else
+                    <div class="login-alert">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        Você precisa estar <a href="{{ route('login') }}">logado</a> para avaliar este produto.
+                    </div>
+                @endif
             </div>
         </div>
+    </section>
 
-        <div class="reviews-list">
-            <article class="review-card">
-                <div class="review-header">
-                    <div class="reviewer-meta">
-                        <div class="reviewer-avatar" aria-hidden="true">CO</div>
-                        <div>
-                            <strong class="reviewer-name">Carlos Oliveira</strong>
-                            <span class="verified-purchase"><i class="fa-solid fa-circle-check"></i> Compra verificada</span>
-                        </div>
-                    </div>
-                    <div class="review-right">
-                        <div class="stars" aria-label="5 estrelas">
-                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                        </div>
-                        <span class="review-date">12 de Novembro de 2023</span>
+    {{-- ============================= --}}
+    {{-- PRODUTOS RELACIONADOS --}}
+    {{-- ============================= --}}
+    @if($relacionados->count() > 0)
+    <section class="product-related-section">
+        <div class="section-header" style="margin-bottom:1.5rem;">
+            <h2 style="font-size:1.3rem;font-weight:700;">
+                <i class="fa-solid fa-layer-group"></i> Produtos Relacionados
+            </h2>
+        </div>
+        <div class="store-product-grid related-grid">
+            @foreach($relacionados as $rel)
+            <article class="store-card">
+                <div class="card-image-wrapper">
+                    @if($rel->imagem)
+                        <img src="{{ asset('uploads/produtos/' . $rel->imagem) }}" alt="{{ $rel->nome }}">
+                    @else
+                        <img src="https://via.placeholder.com/400x300?text=Sem+Imagem" alt="{{ $rel->nome }}">
+                    @endif
+                </div>
+                <div class="card-content">
+                    <span class="card-brand">{{ $rel->categoria }}</span>
+                    <h3 class="card-title">{{ $rel->nome }}</h3>
+                    <div class="card-pricing">
+                        <div class="card-price">R$ {{ number_format($rel->preco_pix ?? $rel->preco, 2, ',', '.') }}</div>
                     </div>
                 </div>
-                <h3 class="review-title">Excelente custo-benefício!</h3>
-                <p class="review-text">O monitor chegou perfeito, sem dead pixels. A diferença de 60Hz para 144Hz é absurda, melhorou muito meu desempenho no CS:GO. Recomendo muito!</p>
-            </article>
-
-            <article class="review-card">
-                <div class="review-header">
-                    <div class="reviewer-meta">
-                        <div class="reviewer-avatar" aria-hidden="true">MS</div>
-                        <div>
-                            <strong class="reviewer-name">Mariana Souza</strong>
-                            <span class="verified-purchase"><i class="fa-solid fa-circle-check"></i> Compra verificada</span>
-                        </div>
-                    </div>
-                    <div class="review-right">
-                        <div class="stars" aria-label="4 estrelas">
-                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                            <i class="fa-regular fa-star"></i>
-                        </div>
-                        <span class="review-date">05 de Outubro de 2023</span>
-                    </div>
+                <div class="card-actions">
+                    <form method="POST" action="{{ route('carrinho.adicionar') }}" class="form-add-cart">
+                        @csrf
+                        <input type="hidden" name="produto_id" value="{{ $rel->id }}">
+                        <input type="hidden" name="quantidade" value="1">
+                        <input type="hidden" name="acao" value="adicionar">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa-solid fa-cart-shopping"></i> Adicionar
+                        </button>
+                    </form>
+                    <a href="{{ route('loja.produto', $rel->id) }}" class="btn btn-outline">Ver detalhes</a>
                 </div>
-                <h3 class="review-title">Muito bom, mas a base é grande</h3>
-                <p class="review-text">Cores muito vivas e ótimo para jogar e trabalhar. Minha única crítica é que a base dele ocupa um bom espaço na mesa, então tive que comprar um suporte articulado. No mais, perfeito.</p>
             </article>
+            @endforeach
         </div>
     </section>
+    @endif
 
 </main>
 
 <script>
-/* ── Troca de imagem principal ── */
-function trocarImagem(thumb, src) {
-    var mainImg = document.getElementById('main-img');
+
+/* ============================= */
+/* TROCAR IMAGEM */
+/* ============================= */
+
+function trocarImagem(thumb, src)
+{
+
+    var mainImg =
+        document.getElementById('main-img');
+
     mainImg.style.opacity = '0';
-    setTimeout(function () {
+
+    setTimeout(function ()
+    {
+
         mainImg.src = src;
+
         mainImg.style.opacity = '1';
+
     }, 150);
 
-    document.querySelectorAll('.thumb').forEach(function (t) { t.classList.remove('active'); });
+    document.querySelectorAll('.thumb')
+        .forEach(function (t)
+    {
+
+        t.classList.remove('active');
+
+    });
+
     thumb.classList.add('active');
+
 }
 
-/* ── Controle + / − ── */
-function alterarQtd(delta) {
-    var input = document.getElementById('quantidade');
-    var novo  = Math.min(10, Math.max(1, parseInt(input.value) + delta));
+/* ============================= */
+/* QUANTIDADE */
+/* ============================= */
+
+function alterarQtd(delta)
+{
+
+    var input =
+        document.getElementById('quantidade');
+
+    var atual =
+        parseInt(input.value);
+
+    var max =
+        parseInt(input.max);
+
+    var novo =
+        atual + delta;
+
+    if (novo < 1)
+    {
+        novo = 1;
+    }
+
+    if (novo > max)
+    {
+        novo = max;
+    }
+
     input.value = novo;
-    input.classList.add('qty-flash');
-    setTimeout(function () { input.classList.remove('qty-flash'); }, 250);
+
 }
 
-/* ── Feedback no botão "Adicionar ao Carrinho" ── */
-document.getElementById('btn-add-cart').addEventListener('click', function (e) {
-    e.preventDefault();
+/* ============================= */
+/* FEEDBACK CARRINHO */
+/* ============================= */
+
+document.getElementById('btn-add-cart')
+.addEventListener('click', function ()
+{
+
     var btn = this;
-    btn.innerHTML = '<i class="fa-solid fa-circle-check"></i> Adicionado!';
+
+    btn.innerHTML =
+        '<i class="fa-solid fa-check"></i> Adicionado!';
+
     btn.classList.add('btn-added');
-    setTimeout(function () {
-        btn.innerHTML = '<i class="fa-solid fa-cart-plus"></i> Adicionar ao Carrinho';
+
+    setTimeout(function ()
+    {
+
+        btn.innerHTML =
+            '<i class="fa-solid fa-cart-plus"></i> Adicionar ao Carrinho';
+
         btn.classList.remove('btn-added');
+
     }, 2000);
+
 });
+
 </script>
 
 @endsection

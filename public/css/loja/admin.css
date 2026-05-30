@@ -1,4 +1,5 @@
 /* ================= CABEÇALHO DA PÁGINA ================= */
+
 .admin-page-header {
     display: flex;
     justify-content: space-between;
@@ -14,20 +15,22 @@
 .page-title p {
     color: var(--text-muted);
     font-size: 0.95rem;
+    margin-top: 5px;
 }
 
-/* ================= BOTÕES PADRÃO ================= */
+/* ================= BOTÕES ================= */
+
 .btn {
     display: inline-flex;
     align-items: center;
     gap: 8px;
     padding: 10px 20px;
     border-radius: 6px;
-    font-weight: 500;
+    border: none;
     cursor: pointer;
     transition: var(--transition);
-    border: none;
-    font-size: 0.95rem;
+    font-weight: 500;
+    text-decoration: none;
 }
 
 .btn-primary {
@@ -40,105 +43,129 @@
     transform: translateY(-2px);
 }
 
-/* ================= CARD PRINCIPAL ================= */
+/* ================= CARD ================= */
+
 .admin-card {
-    background-color: var(--white);
+    background: var(--white);
     border-radius: 12px;
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border-color);
     padding: 25px;
-}
-
-.admin-card-header {
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: flex-end;
-}
-
-.form-select {
-    padding: 10px 15px;
-    border-radius: 6px;
     border: 1px solid var(--border-color);
-    outline: none;
-    color: var(--text-main);
-    background-color: var(--bg-light);
+    box-shadow: var(--shadow);
 }
 
-/* ================= TABELA DE DADOS ================= */
+/* ================= TABELA ================= */
+
 .table-responsive {
+    width: 100%;
     overflow-x: auto;
 }
 
 .admin-table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 800px;
+}
+
+.admin-table thead tr {
+    background: var(--bg-light);
 }
 
 .admin-table th {
-    background-color: var(--bg-light);
-    color: var(--text-muted);
-    padding: 12px 15px;
-    text-align: left;
+    padding: 15px;
+    text-align: center;
     font-weight: 600;
-    font-size: 0.9rem;
+    color: var(--text-muted);
     border-bottom: 2px solid var(--border-color);
 }
 
 .admin-table td {
     padding: 15px;
-    border-bottom: 1px solid var(--border-color);
+    text-align: center;
     vertical-align: middle;
-    color: var(--text-main);
-    font-size: 0.95rem;
+    border-bottom: 1px solid var(--border-color);
 }
+
+/* ================= IMAGEM ================= */
 
 .table-img {
-    width: 50px;
-    height: 50px;
-    object-fit: contain;
-    background-color: var(--bg-light);
-    border-radius: 6px;
-    padding: 5px;
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 8px;
     border: 1px solid var(--border-color);
+    display: block;
+    margin: auto;
 }
 
-/* Badges de Estoque */
+/* ================= STATUS ================= */
+
 .badge-stock {
-    padding: 4px 10px;
+    display: inline-block;
+    padding: 5px 12px;
     border-radius: 20px;
     font-size: 0.8rem;
     font-weight: 600;
 }
-.badge-stock.success { background-color: rgba(16, 185, 129, 0.1); color: #10b981; }
-.badge-stock.warning { background-color: rgba(245, 158, 11, 0.1); color: #f59e0b; }
-.badge-stock.danger { background-color: rgba(239, 68, 68, 0.1); color: #ef4444; }
 
-/* Botões de Ação na Tabela (Editar/Excluir) */
+.badge-stock.success {
+    background: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+}
+
+.badge-stock.warning {
+    background: rgba(245, 158, 11, 0.15);
+    color: #f59e0b;
+}
+
+.badge-stock.danger {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+}
+
+/* ================= AÇÕES ================= */
+
 .action-buttons {
     display: flex;
+    justify-content: center;
+    align-items: center;
     gap: 10px;
+    white-space: nowrap;
 }
 
 .btn-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 6px;
+    width: 36px;
+    height: 36px;
     border: none;
+    border-radius: 8px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: var(--transition);
+    transition: 0.2s;
+    text-decoration: none;
 }
 
-.btn-icon.edit { background-color: rgba(59, 130, 246, 0.1); color: #3b82f6; }
-.btn-icon.edit:hover { background-color: #3b82f6; color: white; }
+.btn-icon.edit {
+    background: rgba(59, 130, 246, 0.15);
+    color: #3b82f6;
+}
 
-.btn-icon.delete { background-color: rgba(239, 68, 68, 0.1); color: #ef4444; }
-.btn-icon.delete:hover { background-color: #ef4444; color: white; }
+.btn-icon.edit:hover {
+    background: #3b82f6;
+    color: #fff;
+}
+
+.btn-icon.delete {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+}
+
+.btn-icon.delete:hover {
+    background: #ef4444;
+    color: #fff;
+}
 
 /* ================= PAGINAÇÃO ================= */
+
 .pagination {
     display: flex;
     justify-content: flex-end;
@@ -150,11 +177,10 @@
     width: 35px;
     height: 35px;
     border: 1px solid var(--border-color);
-    background-color: var(--white);
+    background: var(--white);
     border-radius: 6px;
     cursor: pointer;
-    transition: var(--transition);
-    color: var(--text-main);
+    transition: 0.2s;
 }
 
 .page-btn:hover:not(.disabled) {
@@ -163,7 +189,7 @@
 }
 
 .page-btn.active {
-    background-color: var(--accent);
+    background: var(--accent);
     border-color: var(--accent);
     color: var(--bg-dark);
     font-weight: bold;
@@ -172,4 +198,21 @@
 .page-btn.disabled {
     opacity: 0.5;
     cursor: not-allowed;
+}
+
+/* ================= RESPONSIVO ================= */
+
+@media (max-width: 768px) {
+
+    .admin-page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .table-img {
+        width: 55px;
+        height: 55px;
+    }
+
 }

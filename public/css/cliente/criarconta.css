@@ -1,0 +1,197 @@
+/* ===============================================
+   CADASTRO E LOGIN - LAYOUT CENTRALIZADO E ANTI-SCROLL
+   =============================================== */
+
+/* Wrapper principal: Ocupa o espaço restante e proíbe scroll na página inteira */
+.login-flex-wrapper.no-scroll-area {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px; 
+    background-color: transparent; 
+    overflow: hidden; 
+    max-height: calc(100vh - 80px); /* Margem de segurança para header/footer */
+}
+
+/* Card base e Card Largo para Cadastro */
+.login-compact-card {
+    background-color: var(--white, #ffffff);
+    width: 100%;
+    max-width: 400px;
+    padding: 24px; 
+    border-radius: var(--radius, 10px);
+    box-shadow: var(--shadow, 0 4px 20px rgba(0, 0, 0, 0.06));
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    max-height: 100%;
+}
+
+.register-wide-card {
+    max-width: 680px; /* Mais largo no desktop para caber 2 colunas e evitar altura excessiva */
+}
+
+/* Cabeçalho do Card */
+.login-header-compact {
+    text-align: center;
+    margin-bottom: 16px; 
+    flex-shrink: 0;
+}
+
+.login-header-compact h2 {
+    font-size: 1.5rem;
+    color: var(--bg-dark, #111111);
+    margin-bottom: 2px;
+}
+
+.login-header-compact p {
+    color: var(--text-muted, #777777);
+    font-size: 0.85rem;
+}
+
+/* Formulário e Inputs */
+.scrollable-form {
+    overflow-y: auto; /* Scroll apenas aqui dentro se a tela for minúscula */
+    padding-right: 5px; 
+    margin-bottom: 4px;
+}
+.scrollable-form::-webkit-scrollbar { width: 4px; }
+.scrollable-form::-webkit-scrollbar-thumb { background: #d1d9e6; border-radius: 4px; }
+
+.form-group-compact {
+    margin-bottom: 12px; 
+}
+
+.form-row-compact {
+    display: flex;
+    gap: 12px; 
+}
+
+.form-row-compact .half-width {
+    flex: 1;
+    min-width: 0;
+}
+
+.form-group-compact label {
+    display: block;
+    font-size: 0.85rem; 
+    font-weight: 500;
+    color: var(--text-main, #333333);
+    margin-bottom: 6px; 
+}
+
+.input-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-box > i {
+    position: absolute;
+    left: 12px;
+    color: #a0aec0;
+    font-size: 0.9rem;
+}
+
+.input-box input {
+    width: 100%;
+    padding: 10px 12px 10px 34px;
+    border: 1.5px solid var(--border-color, #e2e8f0);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: var(--text-main, #333333);
+    background-color: var(--white, #ffffff);
+    outline: none;
+    transition: var(--transition, all 0.25s ease);
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+.input-box input:focus {
+    border-color: var(--accent, #ffcc00);
+    box-shadow: 0 0 0 3px rgba(255, 204, 0, 0.14);
+}
+
+/* Botões do Formulário */
+.btn-toggle-view {
+    position: absolute;
+    right: 8px;
+    background: transparent;
+    border: none;
+    color: #a0aec0;
+    cursor: pointer;
+    padding: 6px;
+    font-size: 0.95rem;
+}
+
+.btn-toggle-view:hover { color: var(--text-main, #333333); }
+
+.btn-submit-compact {
+    width: 100%;
+    background-color: var(--accent, #ffcc00) !important;
+    color: var(--bg-dark, #111111) !important;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition, all 0.25s ease);
+    margin-top: 4px;
+    flex-shrink: 0;
+}
+
+.btn-submit-compact:hover { background-color: var(--accent-hover, #e6b800) !important; }
+
+/* Separador e Área de Login (Footer do Card) */
+.divider-compact {
+    height: 1px;
+    background-color: var(--border-color, #e2e8f0);
+    margin: 16px 0 16px; 
+    flex-shrink: 0;
+}
+
+.register-action {
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.register-action p {
+    color: var(--text-muted, #777777);
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+}
+
+.btn-outline-compact {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 10px; 
+    background-color: var(--bg-light, #f4f6f9);
+    border: 1.5px solid var(--border-color, #e2e8f0);
+    border-radius: 8px;
+    color: var(--text-main, #333333);
+    font-weight: 600;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+    text-decoration: none;
+    transition: var(--transition, all 0.25s ease);
+}
+
+.btn-outline-compact:hover {
+    background-color: #e2e8f0;
+    border-color: #d1d9e6;
+}
+
+/* Responsividade Mobile */
+@media (max-width: 600px) {
+    .form-row-compact {
+        flex-direction: column;
+        gap: 0;
+    }
+    .register-wide-card {
+        padding: 20px 16px;
+    }
+}

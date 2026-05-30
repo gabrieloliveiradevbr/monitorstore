@@ -1,0 +1,181 @@
+/* ===============================================
+   LOGIN - CORREÇÃO DE BOTÕES E LINK DE SENHA
+   =============================================== */
+
+.login-flex-wrapper {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px; 
+    background-color: transparent; 
+    min-height: auto; 
+}
+
+.login-compact-card {
+    background-color: var(--white, #ffffff);
+    width: 100%;
+    max-width: 380px;
+    padding: 32px;
+    border-radius: var(--radius, 10px);
+    box-shadow: var(--shadow, 0 4px 20px rgba(0, 0, 0, 0.06));
+    box-sizing: border-box;
+}
+
+.login-header-compact {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.login-header-compact h2 {
+    font-size: 1.6rem;
+    color: var(--bg-dark, #111111);
+    margin-bottom: 4px;
+}
+
+.login-header-compact p {
+    color: var(--text-muted, #777777);
+    font-size: 0.9rem;
+}
+
+.form-group-compact {
+    margin-bottom: 16px;
+}
+
+.form-group-compact label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-main, #333333);
+    margin-bottom: 6px;
+}
+
+/* Novo posicionamento do Esqueci Minha Senha */
+.link-forgot {
+    display: block;
+    text-align: right;
+    font-size: 0.8rem;
+    color: var(--text-muted, #777777);
+    text-decoration: none;
+    margin-top: 8px; /* Dá um respiro abaixo do campo de senha */
+}
+
+.link-forgot:hover {
+    color: var(--bg-dark, #111111);
+    text-decoration: underline;
+}
+
+/* Inputs */
+.input-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-box > i {
+    position: absolute;
+    left: 14px;
+    color: #a0aec0;
+    font-size: 0.95rem;
+}
+
+.input-box input {
+    width: 100%;
+    padding: 10px 14px 10px 38px;
+    border: 1.5px solid var(--border-color, #e2e8f0);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: var(--text-main, #333333);
+    background-color: var(--white, #ffffff);
+    outline: none;
+    transition: var(--transition, all 0.25s ease);
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+.input-box input:focus {
+    border-color: var(--accent, #ffcc00);
+    box-shadow: 0 0 0 3px rgba(255, 204, 0, 0.14);
+}
+
+.btn-toggle-view {
+    position: absolute;
+    right: 10px;
+    background: transparent;
+    border: none;
+    color: #a0aec0;
+    cursor: pointer;
+    padding: 6px;
+    font-size: 0.95rem;
+}
+
+.btn-toggle-view:hover {
+    color: var(--text-main, #333333);
+}
+
+/* Botão Entrar (Corrigido para não ficar transparente) */
+.btn-submit-compact {
+    width: 100%;
+    background-color: var(--accent, #ffcc00) !important; /* Força a cor amarela */
+    color: var(--bg-dark, #111111) !important; /* Força o texto escuro */
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition, all 0.25s ease);
+    margin-top: 4px;
+}
+
+.btn-submit-compact:hover {
+    background-color: var(--accent-hover, #e6b800) !important;
+}
+
+/* Separador e Footer do Card */
+.divider-compact {
+    height: 1px;
+    background-color: var(--border-color, #e2e8f0);
+    margin: 24px 0 20px;
+}
+
+.register-action {
+    text-align: center;
+}
+
+.register-action p {
+    color: var(--text-muted, #777777);
+    font-size: 0.85rem;
+    margin-bottom: 10px;
+}
+
+/* Botão Criar Conta (Corrigido com fundo sólido) */
+.btn-outline-compact {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    background-color: var(--bg-light, #f4f6f9); /* Fundo sólido em vez de transparente */
+    border: 1.5px solid var(--border-color, #e2e8f0);
+    border-radius: 8px;
+    color: var(--text-main, #333333);
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: var(--transition, all 0.25s ease);
+    box-sizing: border-box;
+    text-decoration: none;
+}
+
+.btn-outline-compact:hover {
+    background-color: #e2e8f0; /* Escurece levemente no hover */
+    border-color: #d1d9e6;
+}
+
+@media (max-width: 480px) {
+    .login-compact-card {
+        padding: 24px 20px;
+        box-shadow: none;
+        border: 1px solid var(--border-color, #e2e8f0);
+    }
+}

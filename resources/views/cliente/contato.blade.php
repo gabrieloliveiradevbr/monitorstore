@@ -32,8 +32,25 @@
             <span class="section-label"><i class="fa-solid fa-envelope"></i> Formulário</span>
             <h2>Envie uma mensagem</h2>
 
-            <form method="POST" action="processa_contato.php" class="contact-form" id="contactForm" novalidate>
+            @if(session('mensagem_sucesso'))
+                <div style="background:#d4edda;color:#155724;border:1px solid #c3e6cb;padding:15px 20px;border-radius:8px;margin-bottom:20px;display:flex;align-items:center;gap:10px;">
+                    <i class="fa-solid fa-circle-check"></i> {{ session('mensagem_sucesso') }}
+                </div>
+            @endif
 
+            @if($errors->any())
+                <div style="background:#f8d7da;color:#721c24;border:1px solid #f5c6cb;padding:15px 20px;border-radius:8px;margin-bottom:20px;">
+                    <ul style="margin:0;padding-left:20px;">
+                        @foreach($errors->all() as $erro)
+                            <li>{{ $erro }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <form method="POST" action="{{ route('contato.store') }}" class="contact-form" id="contactForm" novalidate>
+
+                @csrf
                 <div class="form-row">
                     <div class="form-group">
                         <label for="nome">Nome Completo</label>
@@ -132,30 +149,12 @@
 
 </main>
 
-{{-- ===== JS: Feedback de envio ===== --}}
+{{-- ===== JS ===== --}}
 <script>
-document.getElementById('contactForm').addEventListener('submit', function (e) {
-    e.preventDefault(); // remova esta linha quando conectar ao backend
-
-    const btn = document.getElementById('btnSubmit');
-    const original = btn.innerHTML;
-
-    btn.innerHTML = '<i class="fa-solid fa-check"></i> Mensagem enviada!';
-    btn.classList.add('sent');
-    btn.disabled = true;
-
-    setTimeout(() => {
-        btn.innerHTML = original;
-        btn.classList.remove('sent');
-        btn.disabled = false;
-        this.reset();
-    }, 3000);
-});
-
 // Highlight sutil nos campos ao focar
 document.querySelectorAll('.form-control').forEach(input => {
     input.addEventListener('focus', () => {
-        input.closest('.form-group').querySelector('label').style.color = 'var(--ms-black)';
+        input.closest('.form-group').querySelector('label').style.color = 'var(--ms-black, #111)';
     });
     input.addEventListener('blur', () => {
         input.closest('.form-group').querySelector('label').style.color = '';

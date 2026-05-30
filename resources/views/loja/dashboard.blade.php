@@ -15,17 +15,17 @@
         <div class="card-icon"><i class="fa-solid fa-box-open"></i></div>
         <div class="card-info">
             <h3>Total de Produtos</h3>
-            <span class="card-number">124</span>
-            <p class="card-desc">Ativos no catálogo</p>
+            <span class="card-number">{{ $totalProdutos }}</span>
+            <p class="card-desc">Cadastrados no catálogo</p>
         </div>
     </div>
     
     <div class="summary-card">
-        <div class="card-icon"><i class="fa-solid fa-cart-arrow-down"></i></div>
+        <div class="card-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
         <div class="card-info">
-            <h3>Total de Pedidos</h3>
-            <span class="card-number">856</span>
-            <p class="card-desc">Neste mês</p>
+            <h3>Produtos Sem Estoque</h3>
+            <span class="card-number">{{ $produtosSemEstoque }}</span>
+            <p class="card-desc">Necessitam de reposição</p>
         </div>
     </div>
     
@@ -33,17 +33,17 @@
         <div class="card-icon"><i class="fa-solid fa-users"></i></div>
         <div class="card-info">
             <h3>Total de Clientes</h3>
-            <span class="card-number">3.240</span>
+            <span class="card-number">{{ $totalClientes }}</span>
             <p class="card-desc">Cadastrados na base</p>
         </div>
     </div>
     
     <div class="summary-card">
-        <div class="card-icon"><i class="fa-solid fa-money-bill-trend-up"></i></div>
+        <div class="card-icon"><i class="fa-solid fa-cart-shopping"></i></div>
         <div class="card-info">
-            <h3>Faturamento do Mês</h3>
-            <span class="card-number">R$ 45.890</span>
-            <p class="card-desc">↑ 12% vs. mês passado</p>
+            <h3>Total de Pedidos</h3>
+            <span class="card-number">{{ $totalPedidos }}</span>
+            <p class="card-desc">Registrados no sistema</p>
         </div>
     </div>
 </section>

@@ -6,12 +6,42 @@
 
 <main class="conteudo-principal account-page">
 
+    @if ($errors->any())
+        <div class="custom-alert error-alert">
+            <i class="fa-solid fa-circle-xmark"></i>
+
+            <div>
+                @foreach ($errors->all() as $error)
+                    <div>{{ $error }}</div>
+                @endforeach
+            </div>
+
+            <button type="button" onclick="fecharAlerta(this)">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+    @endif
+
     @if(session('mensagem'))
-    <script>
-        window.onload = function () {
-            alert("{{ session('mensagem') }}");
-        }
-    </script>
+        <div class="custom-alert success-alert">
+            <i class="fa-solid fa-circle-check"></i>
+            <span>{{ session('mensagem') }}</span>
+
+            <button type="button" onclick="fecharAlerta(this)">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+    @endif
+
+    @if(session('erro'))
+        <div class="custom-alert error-alert">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <span>{{ session('erro') }}</span>
+
+            <button type="button" onclick="fecharAlerta(this)">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
     @endif
 
     <header class="store-page-header">
@@ -393,6 +423,32 @@
                     Alterar Senha
                 </h2>
 
+                <div class="form-requirements" id="passwordRequirements" style="display:none;">
+                    <p>Requisitos da senha:</p>
+
+                    <ul>
+                        <li id="req-length" class="invalid">
+                            <i class="fa-solid fa-circle-xmark"></i>
+                            Mínimo de 8 caracteres
+                        </li>
+
+                        <li id="req-upper" class="invalid">
+                            <i class="fa-solid fa-circle-xmark"></i>
+                            Uma letra maiúscula
+                        </li>
+
+                        <li id="req-number" class="invalid">
+                            <i class="fa-solid fa-circle-xmark"></i>
+                            Um número
+                        </li>
+
+                        <li id="req-special" class="invalid">
+                            <i class="fa-solid fa-circle-xmark"></i>
+                            Um caractere especial
+                        </li>
+                    </ul>
+                </div>
+
                 <hr class="section-divider">
 
                 <form method="POST" action="{{ route('cliente.senha', $cliente->id) }}" class="account-form">
@@ -465,6 +521,11 @@
                                 Confirmar Nova Senha
                             </label>
 
+                            <div id="senha-match-alert" class="form-error" style="display:none;">
+                                <i class="fa-solid fa-circle-xmark"></i>
+                                As senhas não coincidem.
+                            </div>
+
                             <div class="input-password-wrapper">
 
                                 <input
@@ -511,7 +572,6 @@
 <script>
 
 function alternarCor(elementoClicado) {
-
     document.querySelectorAll('.nav-link').forEach(function(link) {
         link.classList.remove('active');
     });
@@ -521,8 +581,8 @@ function alternarCor(elementoClicado) {
 
 function toggleSenha(id, btn) {
 
-    var input = document.getElementById(id);
-    var icon  = btn.querySelector('i');
+    const input = document.getElementById(id);
+    const icon = btn.querySelector('i');
 
     if (input.type === 'password') {
 
@@ -537,23 +597,96 @@ function toggleSenha(id, btn) {
     }
 }
 
+function fecharAlerta(btn) {
+    btn.parentElement.remove();
+}
+
+function validar(id, ok) {
+
+    const item = document.getElementById(id);
+
+    if (!item) return;
+
+    const icon = item.querySelector('i');
+
+    if (ok) {
+
+        item.classList.remove('invalid');
+        item.classList.add('valid');
+
+        icon.className = 'fa-solid fa-circle-check';
+
+    } else {
+
+        item.classList.remove('valid');
+        item.classList.add('invalid');
+
+        icon.className = 'fa-solid fa-circle-xmark';
+
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function () {
 
-    document.querySelectorAll('.account-form').forEach(function (form) {
+    document.querySelectorAll('.account-form').forEach(function(form) {
 
-        form.addEventListener('submit', function () {
+        form.addEventListener('submit', function() {
 
-            var btn = form.querySelector('.btn-primary');
+            const btn = form.querySelector('.btn-primary');
 
             if (btn) {
-
                 btn.innerHTML = 'Salvando...';
-
             }
 
         });
 
     });
+
+    const senha = document.getElementById('nova_senha');
+    const confirmaSenha = document.getElementById('confirma_senha');
+    const requirementsBox = document.getElementById('passwordRequirements');
+    const senhaAlert = document.getElementById('senha-match-alert');
+
+    if (senha) {
+
+        senha.addEventListener('focus', function() {
+
+            if (requirementsBox) {
+                requirementsBox.style.display = 'block';
+            }
+
+        });
+
+        senha.addEventListener('input', function() {
+
+            validar('req-length', senha.value.length >= 8);
+            validar('req-upper', /[A-Z]/.test(senha.value));
+            validar('req-number', /\d/.test(senha.value));
+            validar('req-special', /[^A-Za-z0-9]/.test(senha.value));
+
+        });
+
+    }
+
+    if (confirmaSenha && senha && senhaAlert) {
+
+        confirmaSenha.addEventListener('input', function() {
+
+            if (confirmaSenha.value === '') {
+
+                senhaAlert.style.display = 'none';
+                return;
+
+            }
+
+            senhaAlert.style.display =
+                senha.value !== confirmaSenha.value
+                    ? 'flex'
+                    : 'none';
+
+        });
+
+    }
 
 });
 

@@ -1,4 +1,4 @@
-@extends('layout_cliente')
+﻿@extends('layout_cliente')
 
 @section('contentcliente')
 
@@ -180,7 +180,7 @@
             </div>
 
             {{-- DESCRIÇÃO --}}
-            <p class="product-short-desc" style="display:none;">
+            <p class="product-short-desc" >
 
                 {{ $produto->descricao }}
 
@@ -290,8 +290,7 @@
                             class="qty-btn"
                             onclick="alterarQtd(-1)"
                         >
-                            −
-                        </button>
+                            &minus;</button>
 
                         <input
                             type="number"
@@ -394,19 +393,42 @@
     {{-- ============================= --}}
     <section class="product-details-section store-card">
 
-        <h2>
+    <button
+        type="button"
+        id="btnDescricao"
+        class="btn btn-outline btn-toggle-description"
+        onclick="toggleDescricao()"
+    >
+        Ler descrição completa
+    </button>
 
-            <i class="fa-solid fa-list-check"></i>
+    <div
+        id="descricaoProduto"
+        class="product-description-preview collapsed"
+    >
 
-            Descrição do Produto
-
-        </h2>
+        @php
+            $descricaoLinhas = collect(preg_split('/\R+/', trim($produto->descricao)))
+                ->map(fn ($linha) => trim($linha))
+                ->filter();
+        @endphp
 
         <div class="product-description">
-
-            {!! nl2br(e($produto->descricao)) !!}
-
+            @foreach($descricaoLinhas as $linha)
+                @if(preg_match('/:\s*$/', $linha))
+                    <h3 class="description-subtitle">{{ $linha }}</h3>
+                @elseif(preg_match('/^-\s*/', $linha))
+                    <p class="description-line description-bullet">
+                        <i class="fa-solid fa-check"></i>
+                        <span>{{ preg_replace('/^-\s*/', '', $linha) }}</span>
+                    </p>
+                @else
+                    <p class="description-line">{{ $linha }}</p>
+                @endif
+            @endforeach
         </div>
+
+    </div>
 
     </section>
 
@@ -429,7 +451,7 @@
                                 <strong class="reviewer-name">{{ $av->cliente->nome }}</strong>
                                 <div class="review-stars">
                                     @for($i = 1; $i <= 5; $i++)
-                                        <i class="fa-solid fa-star {{ $i <= $av->nota ? 'active' : 'inactive' }}"></i>
+                                        <i class="fa-solid fa-star {{ $i <= intval($av->nota) ? 'active' : 'inactive' }}"></i>
                                     @endfor
                                 </div>
                             </div>
@@ -438,13 +460,26 @@
                         <p class="review-comment">{{ $av->comentario }}</p>
                     </div>
                 @empty
-                    <p class="no-reviews">Nenhuma avaliação ainda. Seja o primeiro a avaliar!</p>
+                    <p class="no-reviews">Ainda não há avaliações. Seja o primeiro a avaliar este produto.</p>
                 @endforelse
             </div>
 
-            {{-- FORMULÁRIO DE AVALIAÇÃO --}}
+            {{-- FORMULARIO DE AVALIACAO --}}
             <div class="review-form-container">
                 <h3>Deixe sua avaliação</h3>
+                <div class="review-rules">
+                    <h4>
+                        <i class="fa-solid fa-circle-info"></i>
+                        Regras para avaliação
+                    </h4>
+
+                    <ul>
+                        <li>Atribua uma nota de 1 a 5 estrelas.</li>
+                        <li>O comentário deve ter no mínimo 5 caracteres.</li>
+                        <li>Cada cliente pode avaliar o produto apenas uma vez.</li>
+                        <li>Sua opinião ajuda outros compradores.</li>
+                    </ul>
+                </div>
                 @if(session()->has('cliente_id'))
                     <form action="{{ route('avaliacao.store') }}" method="POST" class="review-form">
                         @csrf
@@ -460,11 +495,22 @@
                                     </label>
                                 @endfor
                             </div>
+                            <small class="rating-help">
+                                <i class="fa-solid fa-circle-info"></i>
+                                Clique na quantidade de estrelas para definir sua nota.
+                            </small>
                         </div>
 
                         <div class="form-group">
                             <label for="comentario">Comentário:</label>
-                            <textarea name="comentario" id="comentario" rows="4" required placeholder="O que você achou do produto?"></textarea>
+                            <textarea
+                                name="comentario"
+                                id="comentario"
+                                rows="4"
+                                required
+                                minlength="5"
+                                placeholder="Conte sua experiência com o produto (mínimo 5 caracteres)"
+                            ></textarea>
                         </div>
 
                         <button type="submit" class="btn btn-primary">Enviar Avaliação</button>
@@ -484,8 +530,8 @@
     {{-- ============================= --}}
     @if($relacionados->count() > 0)
     <section class="product-related-section">
-        <div class="section-header" style="margin-bottom:1.5rem;">
-            <h2 style="font-size:1.3rem;font-weight:700;">
+        <div class="section-header">
+            <h2>
                 <i class="fa-solid fa-layer-group"></i> Produtos Relacionados
             </h2>
         </div>
@@ -502,8 +548,36 @@
                 <div class="card-content">
                     <span class="card-brand">{{ $rel->categoria }}</span>
                     <h3 class="card-title">{{ $rel->nome }}</h3>
+
                     <div class="card-pricing">
-                        <div class="card-price">R$ {{ number_format($rel->preco_pix ?? $rel->preco, 2, ',', '.') }}</div>
+                        @php
+                            $precoOriginal = (float) ($rel->preco ?? 0);
+                            $precoOferta = (float) ($rel->preco_pix ?? $rel->preco ?? 0);
+                            $descontoPct = 0;
+                            if ($precoOriginal > 0 && $precoOferta > 0 && $precoOriginal > $precoOferta) {
+                                $descontoPct = (($precoOriginal - $precoOferta) / $precoOriginal) * 100;
+                            }
+                        @endphp
+
+                        @if($descontoPct > 0)
+                            <div class="price-wrapper">
+                                <span class="price-old">
+                                    De R$ {{ number_format($precoOriginal, 2, ',', '.') }}
+                                </span>
+                                <div class="card-price">R$ {{ number_format($precoOferta, 2, ',', '.') }}</div>
+                                <span class="discount-badge">
+                                    -{{ round($descontoPct) }}%
+                                </span>
+                            </div>
+                        @else
+                            <div class="card-price">R$ {{ number_format($precoOferta, 2, ',', '.') }}</div>
+                        @endif
+
+                        @if($rel->preco_parcelado && $rel->parcelas)
+                            <span class="card-installments">
+                                em {{ $rel->parcelas }}x de R$ {{ number_format($rel->preco_parcelado / $rel->parcelas, 2, ',', '.') }}
+                            </span>
+                        @endif
                     </div>
                 </div>
                 <div class="card-actions">
@@ -621,6 +695,37 @@ document.getElementById('btn-add-cart')
 
 });
 
+function toggleDescricao()
+{
+    const descricao =
+        document.getElementById('descricaoProduto');
+
+    const botao =
+        document.getElementById('btnDescricao');
+
+    if (descricao.classList.contains('collapsed'))
+    {
+        descricao.classList.remove('collapsed');
+        descricao.classList.add('expanded');
+
+        botao.innerHTML =
+            'Ocultar descrição';
+    }
+    else
+    {
+        descricao.classList.remove('expanded');
+        descricao.classList.add('collapsed');
+
+        botao.innerHTML =
+            'Ler descrição completa';
+    }
+}
+
 </script>
 
 @endsection
+
+
+
+
+

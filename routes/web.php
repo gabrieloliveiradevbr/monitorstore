@@ -201,7 +201,6 @@ Route::prefix('loja')->group(function () {
         function () {
 
             return view('cliente.login');
-
         }
     )->name('loja.login');
 
@@ -217,7 +216,6 @@ Route::prefix('loja')->group(function () {
         function () {
 
             return view('cliente.criarconta');
-
         }
     )->name('loja.criar');
 
@@ -227,31 +225,35 @@ Route::prefix('loja')->group(function () {
     |--------------------------------------------------------------------------
     */
 
-Route::get(
-    '/carrinho',
-    [clienteController::class, 'carrinho']
-)->name('loja.carrinho');
+    Route::get(
+        '/carrinho',
+        [clienteController::class, 'carrinho']
+    )->name('loja.carrinho');
 
-Route::post(
-    '/carrinho/adicionar',
-    [clienteController::class, 'adicionarCarrinho']
-)->name('carrinho.adicionar');
+    Route::post(
+        '/carrinho/adicionar',
+        [clienteController::class, 'adicionarCarrinho']
+    )->name('carrinho.adicionar');
 
-Route::post(
-    '/carrinho/atualizar',
-    [clienteController::class, 'atualizarCarrinho']
-)->name('carrinho.atualizar');
+    Route::post(
+        '/carrinho/atualizar',
+        [clienteController::class, 'atualizarCarrinho']
+    )->name('carrinho.atualizar');
 
-Route::get(
-    '/carrinho/remover/{id}',
-    [clienteController::class, 'removerCarrinho']
-)->name('carrinho.remover');
+    Route::get(
+        '/carrinho/remover/{id}',
+        [clienteController::class, 'removerCarrinho']
+    )->name('carrinho.remover');
 
-Route::get(
-    '/carrinho/finalizar',
-    [clienteController::class, 'finalizarCarrinho']
-)->name('carrinho.finalizar');
+    Route::get(
+        '/carrinho/finalizar',
+        [clienteController::class, 'checkout']
+    )->name('carrinho.checkout');
 
+    Route::post(
+        '/carrinho/confirmar',
+        [clienteController::class, 'finalizarCarrinho']
+    )->name('carrinho.confirmar');
 });
 
 
@@ -266,7 +268,6 @@ Route::get(
     function () {
 
         return view('loja.login');
-
     }
 )->name('funcionario.login');
 
@@ -407,5 +408,4 @@ Route::prefix('funcionario')->group(function () {
         '/cliente/excluir/{id}',
         [funcionarioController::class, 'excluirCliente']
     )->name('funcionario.cliente.excluir');
-
 });

@@ -19,7 +19,6 @@ class clienteController extends Controller
     {
 
         return view('cliente.login');
-
     }
 
     /*
@@ -37,7 +36,6 @@ class clienteController extends Controller
             'email'     => $request->email,
             'telefone'  => $request->telefone,
             'cpf'       => $request->cpf,
-            'endereco'  => $request->endereco,
             'senha'     => $request->senha
 
         ]);
@@ -54,7 +52,6 @@ class clienteController extends Controller
                 'mensagem',
                 'Conta criada com sucesso!'
             );
-
     }
 
     /*
@@ -67,9 +64,9 @@ class clienteController extends Controller
     {
 
         $cliente = Cliente::where(
-                'email',
-                $request->email
-            )
+            'email',
+            $request->email
+        )
             ->where(
                 'senha',
                 $request->senha
@@ -81,10 +78,9 @@ class clienteController extends Controller
             return redirect()
                 ->back()
                 ->with(
-                    'mensagem',
+                    'erro',
                     'E-mail ou senha inválidos!'
                 );
-
         }
 
         session([
@@ -98,7 +94,6 @@ class clienteController extends Controller
                 'loja.minhaconta',
                 $cliente->id
             );
-
     }
 
     /*
@@ -116,14 +111,12 @@ class clienteController extends Controller
 
             return redirect()
                 ->route('login');
-
         }
 
         return view(
             'cliente.minhaconta',
             compact('cliente')
         );
-
     }
 
     /*
@@ -143,7 +136,6 @@ class clienteController extends Controller
                 'mensagem',
                 'Logout realizado com sucesso!'
             );
-
     }
 
     /*
@@ -154,7 +146,6 @@ class clienteController extends Controller
 
     public function atualizarDados(Request $request, $id)
     {
-
         $cliente = Cliente::find($id);
 
         if (!$cliente) {
@@ -162,18 +153,16 @@ class clienteController extends Controller
             return redirect()
                 ->back()
                 ->with(
-                    'mensagem',
+                    'erro',
                     'Cliente não encontrado!'
                 );
-
         }
 
         $cliente->update([
 
             'nome'      => $request->nome,
             'email'     => $request->email,
-            'telefone'  => $request->telefone,
-            'endereco'  => $request->endereco
+            'telefone'  => $request->telefone
 
         ]);
 
@@ -183,7 +172,6 @@ class clienteController extends Controller
                 'mensagem',
                 'Dados atualizados com sucesso!'
             );
-
     }
 
     /*
@@ -202,10 +190,9 @@ class clienteController extends Controller
             return redirect()
                 ->back()
                 ->with(
-                    'mensagem',
+                    'erro',
                     'Cliente não encontrado!'
                 );
-
         }
 
         if ($cliente->senha != $request->senha_atual) {
@@ -213,10 +200,9 @@ class clienteController extends Controller
             return redirect()
                 ->back()
                 ->with(
-                    'mensagem',
+                    'erro',
                     'Senha atual incorreta!'
                 );
-
         }
 
         if ($request->nova_senha != $request->confirma_senha) {
@@ -224,10 +210,9 @@ class clienteController extends Controller
             return redirect()
                 ->back()
                 ->with(
-                    'mensagem',
+                    'erro',
                     'As senhas não coincidem!'
                 );
-
         }
 
         $cliente->update([
@@ -242,7 +227,6 @@ class clienteController extends Controller
                 'mensagem',
                 'Senha alterada com sucesso!'
             );
-
     }
 
     /*
@@ -261,10 +245,9 @@ class clienteController extends Controller
             return redirect()
                 ->back()
                 ->with(
-                    'mensagem',
+                    'erro',
                     'Cliente não encontrado!'
                 );
-
         }
 
         $cliente->update([
@@ -279,7 +262,6 @@ class clienteController extends Controller
                 'mensagem',
                 'Endereço atualizado com sucesso!'
             );
-
     }
 
     /*
@@ -300,7 +282,6 @@ class clienteController extends Controller
             'cliente.carrinho',
             compact('carrinho')
         );
-
     }
 
     /*
@@ -327,7 +308,6 @@ class clienteController extends Controller
 
             $carrinho[$produto->id]['quantidade']
                 += $quantidade;
-
         } else {
 
             $carrinho[$produto->id] = [
@@ -345,7 +325,6 @@ class clienteController extends Controller
                 'quantidade' => $quantidade
 
             ];
-
         }
 
         session()->put(
@@ -357,7 +336,6 @@ class clienteController extends Controller
 
             return redirect()
                 ->route('loja.carrinho');
-
         }
 
         return redirect()
@@ -366,7 +344,6 @@ class clienteController extends Controller
                 'mensagem',
                 'Produto adicionado ao carrinho!'
             );
-
     }
 
     /*
@@ -391,12 +368,10 @@ class clienteController extends Controller
                 'carrinho',
                 $carrinho
             );
-
         }
 
         return redirect()
             ->route('loja.carrinho');
-
     }
 
     /*
@@ -434,6 +409,47 @@ class clienteController extends Controller
     |--------------------------------------------------------------------------
     */
 
+    public function checkout()
+    {
+        if (!session()->has('cliente_id')) {
+            return redirect()
+                ->route('login')
+                ->with('mensagem', 'Você precisa estar logado para finalizar a compra!');
+        }
+
+        $carrinho = session()->get('carrinho', []);
+
+        if (empty($carrinho)) {
+            return redirect()
+                ->route('loja.carrinho')
+                ->with('mensagem', 'Seu carrinho está vazio.');
+        }
+
+        $subtotal = 0;
+        $totalItens = 0;
+
+        foreach ($carrinho as $item) {
+            $subtotal += ($item['preco_pix'] ?? $item['preco']) * $item['quantidade'];
+            $totalItens += $item['quantidade'];
+        }
+
+        $limiteFreteGratis = 500.00;
+        $frete = ($subtotal >= $limiteFreteGratis || $totalItens == 0) ? 0.00 : 35.00;
+        $total = $subtotal + $frete;
+        $progresso = $subtotal >= $limiteFreteGratis ? 100 : round(($subtotal / $limiteFreteGratis) * 100);
+        $faltaFrete = max(0, $limiteFreteGratis - $subtotal);
+
+        return view('cliente.checkout', [
+            'carrinho' => $carrinho,
+            'subtotal' => $subtotal,
+            'totalItens' => $totalItens,
+            'frete' => $frete,
+            'total' => $total,
+            'progresso' => $progresso,
+            'faltaFrete' => $faltaFrete,
+        ]);
+    }
+
     public function finalizarCarrinho()
     {
         if (!session()->has('cliente_id')) {
@@ -442,11 +458,54 @@ class clienteController extends Controller
                 ->with('mensagem', 'Você precisa estar logado para finalizar a compra!');
         }
 
+        $carrinho = session()->get('carrinho', []);
+
+        if (empty($carrinho)) {
+            return redirect()
+                ->route('loja.carrinho')
+                ->with('mensagem', 'Seu carrinho está vazio.');
+        }
+
+        $clienteId = session('cliente_id');
+
+        $funcionarioId = \App\Models\Funcionario::query()->value('id');
+        $funcionarioId = $funcionarioId ?: 0;
+
+        $pedido = \Illuminate\Support\Facades\DB::table('pedidos')->insertGetId([
+            'data_pedido' => now()->toDateString(),
+            'id_cliente' => $clienteId,
+            'id_funcionario' => $funcionarioId,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        foreach ($carrinho as $item) {
+            $produtoId = $item['id'];
+            $qtd = (int) ($item['quantidade'] ?? 0);
+            if ($qtd <= 0) {
+                continue;
+            }
+
+            $precoUnitario = $item['preco_pix'] ?? $item['preco'] ?? 0;
+
+            \Illuminate\Support\Facades\DB::table('pedidoproduto')->insert([
+                'quantidade' => (string) $qtd,
+                'preco_unitario' => (string) $precoUnitario,
+                'id_pedido' => $pedido,
+                'id_produto' => $produtoId,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            \App\Models\Produto::where('id', $produtoId)->update([
+                'estoque' => \Illuminate\Support\Facades\DB::raw('estoque - ' . $qtd),
+            ]);
+        }
+
         session()->forget('carrinho');
 
         return redirect()
             ->route('loja.home')
             ->with('mensagem', 'Compra finalizada com sucesso! Seu pedido foi registrado.');
     }
-
 }

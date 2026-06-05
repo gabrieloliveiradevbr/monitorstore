@@ -83,6 +83,27 @@
                         </option>
 
                         <option
+                            value="Monitores Home-Office"
+                            {{ old('categoria', $produto->categoria ?? '') == 'Monitores Home-Office' ? 'selected' : '' }}
+                        >
+                            Monitores Home-Office
+                        </option>
+
+                        <option
+                            value="Monitores Smart"
+                            {{ old('categoria', $produto->categoria ?? '') == 'Monitores Smart' ? 'selected' : '' }}
+                        >
+                            Monitores Smart
+                        </option>
+
+                        <option
+                            value="Monitores Portateis"
+                            {{ old('categoria', $produto->categoria ?? '') == 'Monitores Portateis' ? 'selected' : '' }}
+                        >
+                            Monitores Portateis
+                        </option>
+
+                        <option
                             value="Monitores Gamer"
                             {{ old('categoria', $produto->categoria ?? '') == 'Monitores Gamer' ? 'selected' : '' }}
                         >

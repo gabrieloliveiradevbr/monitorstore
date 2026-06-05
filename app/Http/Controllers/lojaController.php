@@ -43,7 +43,10 @@ class LojaController extends Controller
     {
         $query = Produto::where(function ($q) {
             $q->where('categoria', 'Monitores Gamer')
-              ->orWhere('categoria', 'Monitores Profissionais');
+                ->orWhere('categoria', 'Monitores Profissionais')
+                ->orWhere('categoria', 'Monitores Home-Office')
+                ->orWhere('categoria', 'Monitores Smart')
+                ->orWhere('categoria', 'Monitores Portateis');
         })->where('status', 'ativo');
 
         $query = $this->aplicarFiltros($query, $request);
@@ -108,8 +111,8 @@ class LojaController extends Controller
             $produtos = Produto::where('status', 'ativo')
                 ->where(function ($q) use ($termo) {
                     $q->where('nome', 'like', "%{$termo}%")
-                      ->orWhere('descricao', 'like', "%{$termo}%")
-                      ->orWhere('categoria', 'like', "%{$termo}%");
+                        ->orWhere('descricao', 'like', "%{$termo}%")
+                        ->orWhere('categoria', 'like', "%{$termo}%");
                 })
                 ->latest()
                 ->get();

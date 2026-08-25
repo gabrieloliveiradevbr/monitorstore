@@ -36,7 +36,9 @@ class clienteController extends Controller
             'email'     => $request->email,
             'telefone'  => $request->telefone,
             'cpf'       => $request->cpf,
-            'senha'     => $request->senha
+            'senha'     => $request->senha,
+            'endereco'  => $request->endereco
+
 
         ]);
 
